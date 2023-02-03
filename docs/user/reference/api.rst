@@ -1,14 +1,14 @@
 API
 ===
 
-.. automodule:: python3_pip_skeleton
+.. automodule:: tomoscan
 
-    ``python3_pip_skeleton``
+    ``tomoscan``
     -----------------------------------
 
-This is the internal API reference for python3_pip_skeleton
+This is the internal API reference for tomoscan
 
-.. data:: python3_pip_skeleton.__version__
+.. data:: tomoscan.__version__
     :type: str
 
     Version number as calculated by https://github.com/pypa/setuptools_scm
