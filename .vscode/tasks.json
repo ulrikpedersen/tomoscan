@@ -20,6 +20,15 @@
                 "cwd": "${workspaceRoot}"
             },
             "problemMatcher": [],
+        },
+        {
+            "type": "shell",
+            "label": "Autobuild Docs",
+            "command": "source ${workspaceRoot}/.venv/bin/activate && tox -e docs autobuild -- --watch src",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "problemMatcher": [],
         }
     ]
 }
