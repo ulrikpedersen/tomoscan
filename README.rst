@@ -1,37 +1,29 @@
 tomoscan
 ===========================
 
-|code_ci| |docs_ci| |coverage| |pypi_version| |license|
+|code_ci| |docs_ci| |coverage| |license|
 
 .. note::
 
-    This project contains template code only. For documentation on how to
-    adopt this skeleton project see
-    https://ulrikpedersen.github.io/tomoscan-cli
+    This project is in very early development and intended for
+    demonstration purposes only.
 
-This is where you should write a short paragraph that describes what your module does,
-how it does it, and why people should use it.
+This project demonstrates the use of BlueSky to orchestrate a Tomography scan
+for the new EPAC laser facility at Harwell Campus, UK.
 
 ============== ==============================================================
-PyPI           ``pip install tomoscan``
 Source code    https://github.com/ulrikpedersen/tomoscan
 Documentation  https://ulrikpedersen.github.io/tomoscan
 Releases       https://github.com/ulrikpedersen/tomoscan/releases
 ============== ==============================================================
 
-This is where you should put some images or code snippets that illustrate
-some relevant examples. If it is a library then you might put some
-introductory code here:
+Some very brief examples of use:
 
 .. code-block:: python
 
     from tomoscan import __version__
 
     print(f"Hello tomoscan {__version__}")
-
-Or if it is a commandline tool then you might put some example commands here::
-
-    $ python -m tomoscan --version
 
 .. |code_ci| image:: https://github.com/ulrikpedersen/tomoscan/actions/workflows/code.yml/badge.svg?branch=main
     :target: https://github.com/ulrikpedersen/tomoscan/actions/workflows/code.yml
@@ -44,10 +36,6 @@ Or if it is a commandline tool then you might put some example commands here::
 .. |coverage| image:: https://codecov.io/gh/ulrikpedersen/tomoscan/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/ulrikpedersen/tomoscan
     :alt: Test Coverage
-
-.. |pypi_version| image:: https://img.shields.io/pypi/v/tomoscan.svg
-    :target: https://pypi.org/project/tomoscan
-    :alt: Latest PyPI version
 
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
     :target: https://opensource.org/licenses/Apache-2.0
