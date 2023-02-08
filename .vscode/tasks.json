@@ -6,7 +6,16 @@
         {
             "type": "shell",
             "label": "Tests, lint and docs",
-            "command": "tox -p",
+            "command": "source ${workspaceRoot}/.venv/bin/activate && tox -p",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "problemMatcher": [],
+        },
+        {
+            "type": "shell",
+            "label": "Build docs",
+            "command": "source ${workspaceRoot}/.venv/bin/activate && tox -e docs",
             "options": {
                 "cwd": "${workspaceRoot}"
             },
