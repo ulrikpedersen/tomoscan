@@ -1,0 +1,30 @@
+[
+  {
+    "version": "main",
+    "url": "https://ulrikpedersen.github.io/tomoscan/main/"
+  },
+  {
+    "version": ".devcontainer",
+    "url": "https://ulrikpedersen.github.io/tomoscan/.devcontainer/"
+  },
+  {
+    "version": ".github",
+    "url": "https://ulrikpedersen.github.io/tomoscan/.github/"
+  },
+  {
+    "version": ".vscode",
+    "url": "https://ulrikpedersen.github.io/tomoscan/.vscode/"
+  },
+  {
+    "version": "docs",
+    "url": "https://ulrikpedersen.github.io/tomoscan/docs/"
+  },
+  {
+    "version": "src",
+    "url": "https://ulrikpedersen.github.io/tomoscan/src/"
+  },
+  {
+    "version": "tests",
+    "url": "https://ulrikpedersen.github.io/tomoscan/tests/"
+  }
+]
