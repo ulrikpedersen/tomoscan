@@ -11,7 +11,11 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
 ]
 description = "Demonstration of a tomography scan orchestrated by BlueSky"
-dependencies = [] # Add project dependencies here, e.g. ["click", "numpy"]
+dependencies = [
+    "bluesky",
+    "ophyd",
+    "pyepics",
+] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
 license.file = "LICENSE"
 readme = "README.rst"

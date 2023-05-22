@@ -67,3 +67,19 @@ venv*
 # further build artifacts
 lockfiles/
 
+sim/areaDetectorIOC/bin/linux-x86_64/exUser1
+.gitignore
+sim/areaDetectorIOC/dbd/exUser1.dbd
+sim/areaDetectorIOC/db/exUser1_expanded.db
+sim/areaDetectorIOC/db/exUser1.db
+sim/areaDetectorIOC/iocBoot/iocexUser1/O.linux-x86_64/Makefile
+sim/motorIoc/bin/linux-x86_64/caGet
+sim/motorIoc/bin/linux-x86_64/caMonitor
+sim/motorIoc/bin/linux-x86_64/caPut
+sim/motorIoc/bin/linux-x86_64/exercise
+.gitignore
+sim/motorIoc/configure/O.linux-x86_64/Makefile
+sim/motorIoc/db/motor.db
+sim/motorIoc/dbd/exercise.dbd
+*O.linux-x86_64*
+*O.common*
