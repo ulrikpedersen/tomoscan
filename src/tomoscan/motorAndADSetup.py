@@ -12,6 +12,8 @@ from bluesky import RunEngine
 from bluesky.plans import count, scan
 from bluesky.plan_stubs import mv
 
+import bluesky.plan_stubs as bps
+
 
 class MyHDF5Plugin(FileStoreHDF5IterativeWrite, HDF5Plugin_V34):
     ...
@@ -50,15 +52,25 @@ def wait_for_value(signal: EpicsSignal, value, poll_time=0.01, timeout=10):
 
 
 # Custom plan to move motor and then wait for laser pulse to take reading
-def pulse_sync(detector, motor, laser, start, stop, steps):
+def pulse_sync(detectors, motor, laser, start, stop, steps):
     step_size = (stop - start) / (steps - 1)
+
+    for det in detectors:
+        yield from bps.stage(det)
+
+    yield from bps.open_run()
     for i in range(steps):
         yield from mv(motor, start + i * step_size)
         wait_for_value(
             laser, 0, poll_time=0.01, timeout=10
         )  # Want to be at 0 initially such that image taken on pulse
         wait_for_value(laser, 1, poll_time=0.01, timeout=10)
-        yield from count(detector)
+        yield from bps.trigger_and_read(detectors)
+        # yield from count(detector)
+    yield from bps.close_run()
+
+    for det in detectors:
+        yield from bps.unstage(det)
 
 
 prefix = "ADT:USER1:"
