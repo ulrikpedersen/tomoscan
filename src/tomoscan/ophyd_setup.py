@@ -45,7 +45,7 @@ def wait_for_value(signal: EpicsSignal, value, poll_time=0.01, timeout=10):
         ttime.sleep(poll_time)
         if ttime.time() > expiration_time:
             raise TimeoutError(
-                "Timed out waiting for %r to take value %r after %r second"
+                "Timed out waiting for %r to take value %r after %r seconds"
                 % (signal, value, timeout)
             )
         current_value = signal.get()
@@ -64,9 +64,8 @@ def pulse_sync(detectors, motor, laser, start, stop, steps):
         wait_for_value(
             laser, 0, poll_time=0.01, timeout=10
         )  # Want to be at 0 initially such that image taken on pulse
-        wait_for_value(laser, 1, poll_time=0.01, timeout=10)
+        wait_for_value(laser, 1, poll_time=0.001, timeout=10)
         yield from bps.trigger_and_read(detectors)
-        # yield from count(detector)
     yield from bps.close_run()
 
     for det in detectors:
@@ -79,7 +78,7 @@ det.hdf1.create_directory.put(-5)
 det.hdf1.warmup()
 
 det.cam.stage_sigs["image_mode"] = "Single"
-det.cam.stage_sigs["acquire_time"] = 1
+det.cam.stage_sigs["acquire_time"] = 0.2
 
 motor1 = EpicsMotor("motorS:axis1", name="motor1")
 

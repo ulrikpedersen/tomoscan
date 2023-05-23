@@ -83,3 +83,4 @@ sim/motorIoc/db/motor.db
 sim/motorIoc/dbd/exercise.dbd
 *O.linux-x86_64*
 *O.common*
+sim/motorIoc/motorApp/src/O.Common/exercise.dbd
