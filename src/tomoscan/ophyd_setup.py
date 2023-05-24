@@ -11,8 +11,10 @@ from ophyd.areadetector.plugins import HDF5Plugin_V34, TIFFPlugin_V34
 from bluesky import RunEngine
 from bluesky.plans import count, scan
 from bluesky.plan_stubs import mv
-
 import bluesky.plan_stubs as bps
+
+from bluesky.callbacks.best_effort import BestEffortCallback
+from databroker import Broker
 
 
 class MyHDF5Plugin(FileStoreHDF5IterativeWrite, HDF5Plugin_V34):
@@ -60,12 +62,13 @@ def pulse_sync(detectors, motor, laser, start, stop, steps):
 
     yield from bps.open_run()
     for i in range(steps):
+        yield from bps.checkpoint()  # allows pausing/rewinding
         yield from mv(motor, start + i * step_size)
         wait_for_value(
             laser, 0, poll_time=0.01, timeout=10
         )  # Want to be at 0 initially such that image taken on pulse
         wait_for_value(laser, 1, poll_time=0.001, timeout=10)
-        yield from bps.trigger_and_read(detectors)
+        yield from bps.trigger_and_read(list(detectors) + [motor])
     yield from bps.close_run()
 
     for det in detectors:
@@ -78,10 +81,18 @@ det.hdf1.create_directory.put(-5)
 det.hdf1.warmup()
 
 det.cam.stage_sigs["image_mode"] = "Single"
-det.cam.stage_sigs["acquire_time"] = 0.2
+det.cam.stage_sigs["acquire_time"] = 0.05
 
 motor1 = EpicsMotor("motorS:axis1", name="motor1")
 
 laserStatus = EpicsSignal("laser:bi_power", name="laserStatus")
 
 RE = RunEngine()
+
+bec = BestEffortCallback()
+db = Broker.named("temp")  # This creates a temporary database
+
+# Send all metadata/data captured to the BestEffortCallback.
+RE.subscribe(bec)
+# Insert all metadata/data captured into db.
+RE.subscribe(db.insert)
