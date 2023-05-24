@@ -4,17 +4,17 @@ from softioc import builder, softioc
 # Device prefix
 builder.SetDeviceName("laser")
 
-# Tune properties of laser (should likely be PVs if trying to setup properly)
+# Tune properties of laser (not runtime configurable)
 pulseLength = 0.01
-frequency = 1
+frequency = 10
 period = 1 / frequency
 assert period > pulseLength, "frequency is too high for pulse length"
 
 # Create PV
-laser = builder.boolIn("bi_power", initial_value=0)
+laser = builder.boolIn("power", initial_value=0)
 laser_freq = builder.aIn(
     "freq", initial_value=frequency
-)  # This is simply for info and modifying the ai at runtime has no effect
+)  # This is simply for info, modifying the ai at runtime has no effect
 pulse_id = builder.aIn("pulse_id", initial_value=0)
 
 # Start IOC

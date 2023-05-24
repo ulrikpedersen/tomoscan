@@ -3,7 +3,8 @@ import time as ttime
 from ophyd import ADComponent
 from ophyd import AreaDetector, SingleTrigger
 from ophyd import EpicsMotor
-from ophyd.signal import EpicsSignal
+from ophyd import Component, Device, EpicsSignal, EpicsSignalRO
+from ophyd import Kind
 from ophyd.areadetector import cam
 from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
 from ophyd.areadetector.filestore_mixins import FileStoreTIFFIterativeWrite
@@ -39,6 +40,12 @@ class MyDetector(SingleTrigger, AreaDetector):
     )
 
 
+class MyLaser(Device):
+    power = Component(EpicsSignalRO, "power")
+    pulse_id = Component(EpicsSignalRO, "pulse_id")
+    freq = Component(EpicsSignalRO, "freq", kind="config")
+
+
 # Heavily influenced by _wait_for_value function in epics_pvs.py, does block
 def wait_for_value(signal: EpicsSignal, value, poll_time=0.01, timeout=10):
     expiration_time = ttime.time() + timeout
@@ -65,10 +72,10 @@ def pulse_sync(detectors, motor, laser, start, stop, steps):
         yield from bps.checkpoint()  # allows pausing/rewinding
         yield from mv(motor, start + i * step_size)
         wait_for_value(
-            laser, 0, poll_time=0.01, timeout=10
+            laser.power, 0, poll_time=0.01, timeout=10
         )  # Want to be at 0 initially such that image taken on pulse
-        wait_for_value(laser, 1, poll_time=0.001, timeout=10)
-        yield from bps.trigger_and_read(list(detectors) + [motor])
+        wait_for_value(laser.power, 1, poll_time=0.001, timeout=10)
+        yield from bps.trigger_and_read(list(detectors) + [motor] + [laser])
     yield from bps.close_run()
 
     for det in detectors:
@@ -85,7 +92,8 @@ det.cam.stage_sigs["acquire_time"] = 0.05
 
 motor1 = EpicsMotor("motorS:axis1", name="motor1")
 
-laserStatus = EpicsSignal("laser:bi_power", name="laserStatus")
+laser1 = MyLaser("laser:", name="laser1")
+laser1.wait_for_connection()
 
 RE = RunEngine()
 
