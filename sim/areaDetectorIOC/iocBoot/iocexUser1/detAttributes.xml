@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<Attributes>
+    <Attribute name="PulseID" type="EPICS_PV" source="laser:pulse_id" dbrtype="DBR_NATIVE" description="ID of pulse triggering image"/>
+    <Attribute name="LaserFreq" type="EPICS_PV" source="laser:freq" dbrtype="DBR_NATIVE" description="Frequency of laser pulses"/>
+</Attributes>
