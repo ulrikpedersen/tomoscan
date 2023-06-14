@@ -1,0 +1,10 @@
+record(motor, "$(P)$(M)") {
+  field(DTYP, "asynMotor")
+  field(VELO, "15")
+  field(VMAX, "20")
+  field(OUT, "@asyn(motorS,1)")
+  field(MRES, "0.001")
+  field(DHLM, "200")
+  field(DLLM, "-200")
+  field(HLSV, "MAJOR")
+}

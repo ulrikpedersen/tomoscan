@@ -58,7 +58,7 @@ class SimulatedPmacAppNoGui:
         print("launching headless pmac simulator on port", self.port)
         self.pmac_thread.create_pmac(self.port)
         while True:
-            threading._sleep(0.1)
+            sleep(0.1)
 
 
 class PmacThread:
@@ -75,7 +75,8 @@ class PmacThread:
         self.simulator_thread.daemon = True
         self.simulator_thread.start()
         # Setup the server
-        HOST, PORT = "localhost", int(port)
+        #HOST, PORT = "localhost", int(port)
+        HOST, PORT = "0.0.0.0", int(port)
         self.server = PMACServer((HOST, PORT), MyTCPHandler, simulator=self.simulator)
         # Start a thread with the server -- that thread will then start one
         # more thread for each request
