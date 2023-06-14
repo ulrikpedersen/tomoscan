@@ -7,6 +7,7 @@ dbLoadDatabase("dbd/exercise.dbd")
 exercise_registerRecordDeviceDriver(pdbbase)
 
 pmacAsynIPConfigure("geo1", "localhost:1025")
+#pmacAsynIPConfigure("geo1", "0.0.0.0:1025")
 pmacCreateController("motorS","geo1",0,8,50,500)
 pmacCreateAxis("motorS", 1)
 pmacCreateAxis("motorS", 2)
