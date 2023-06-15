@@ -17,3 +17,6 @@ services:
       - type: bind
         source: ./data
         target: /out
+  pulse-sim:
+    image: sim-pulse
+    stop_signal: "SIGKILL"
