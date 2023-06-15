@@ -1,0 +1,18 @@
+version: "3.2"
+services:
+  motor-sim:
+    image: sim-pmac
+    stop_signal: "SIGKILL"
+  motor-ioc:
+    image: pmac-ioc
+    stdin_open: true
+    depends_on:
+      - motor-sim
+    stop_signal: "SIGKILL"
+  areadetector:
+    image: ad-ioc
+    stop_signal: "SIGKILL"
+    volumes:
+      - type: bind
+        source: ./data
+        target: /out
