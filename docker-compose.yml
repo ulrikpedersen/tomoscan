@@ -11,6 +11,7 @@ services:
     stop_signal: "SIGKILL"
   areadetector:
     image: ad-ioc
+    stdin_open: true
     stop_signal: "SIGKILL"
     volumes:
       - type: bind
