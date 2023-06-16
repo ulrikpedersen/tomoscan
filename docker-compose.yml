@@ -9,6 +9,8 @@ services:
     depends_on:
       - motor-sim
     stop_signal: "SIGKILL"
+    env_file:
+      - epics.env
   areadetector:
     image: ad-ioc
     stdin_open: true
@@ -17,6 +19,17 @@ services:
       - type: bind
         source: ./data
         target: /out
+    env_file:
+      - epics.env
   pulse-sim:
     image: sim-pulse
     stop_signal: "SIGKILL"
+    env_file:
+      - epics.env
+  gateway:
+    image: ${DOCKER_TAG_BASE}epics-gateway-run:${DOCKER_TAG_VERSION}
+    ports:
+      - "50640:50640"
+      - "5064:50640/udp"
+    env_file:
+      - epics.env
