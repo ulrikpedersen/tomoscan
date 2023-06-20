@@ -34,4 +34,6 @@ dbpf "ADT:USER1:HDF1:FileTemplate", "%s/%s_%d.h5"
 
 dbpf "ADT:USER1:CAM:AcquirePeriod", "0.2"
 
+dbpf "ADT:USER1:CAM:ImageMode", "Single"
+
 dbpf "ADT:USER1:CAM:Noise", "5"
