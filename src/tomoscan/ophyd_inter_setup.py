@@ -85,6 +85,30 @@ def pulse_sync(detectors, motor, laser, start, stop, steps):
         yield from bps.unstage(det)
 
 
+# Custom plan to move motor based on detector status, designed if detector being triggered outside of bluesky
+def passive_scan(detectors, motor, start, stop, steps, adStatus, pulse_ID):
+    step_size = (stop - start) / (steps - 1)
+
+    yield from mv(motor, start)  # Move motor to starting position since may take time
+
+    yield from bps.open_run()
+
+    for det in detectors:
+        yield from bps.stage(det)
+
+    for i in range(steps):
+        yield from mv(motor, start + i * step_size)
+        yield from bps.checkpoint()
+        wait_for_value(adStatus, 2, poll_time=0.001, timeout=10)
+        yield from bps.trigger_and_read([motor] + [pulse_ID])
+        wait_for_value(adStatus, 0, poll_time=0.001, timeout=10)
+
+    for det in detectors:
+        yield from bps.unstage(det)
+
+    yield from bps.close_run()
+
+
 prefix = "ADT:USER1:"
 det = MyDetector(prefix, name="det")
 det.hdf1.create_directory.put(-5)
@@ -97,6 +121,9 @@ motor1 = EpicsMotor("motorS:axis1", name="motor1")
 
 laser1 = MyLaser("laser:", name="laser1")
 laser1.wait_for_connection()
+
+adStatus = EpicsSignalRO("ADT:USER1:CAM:DetectorState_RBV", name="adStatus")
+pulse_ID = EpicsSignalRO("EPAC-DEV:PULSE:PULSE_ID", name="pulse_ID")
 
 RE = RunEngine()
 

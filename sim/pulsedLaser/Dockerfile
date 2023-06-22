@@ -4,4 +4,4 @@ RUN pip install softioc cothread
 
 COPY simPulse.py SimPulse.py
 
-CMD ["python3", "SimPulse.py"]
+ENTRYPOINT ["python3", "SimPulse.py"]
