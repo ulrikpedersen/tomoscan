@@ -1,0 +1,16 @@
+description: "heavyweight shared database"
+metadatastore:
+    module: "databroker.headersource.mongo"
+    class: "MDS"
+    config:
+        host: "mongo-db"
+        port: 27017
+        database: "bluesky_database"
+        timezone: "UK"
+assets:
+    module: "databroker.assets.mongo"
+    class: "Registry"
+    config:
+        host: "mongo-db"
+        port: 27017
+        database: "bluesky_database"

@@ -76,3 +76,7 @@ services:
         source: ./pulse-id-gen.ini
         target: /app/config.ini
         read_only: true
+  mongo-db:
+    image: mongo
+    ports:
+      - "27017:27017"

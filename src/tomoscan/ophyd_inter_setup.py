@@ -43,10 +43,13 @@ class MyDetector(SingleTrigger, AreaDetector):
 
 
 class MyLaser(Device):
-    power = Component(EpicsSignalRO, "power")
-    pulse_id = Component(EpicsSignalRO, "pulse_id")
-    pulse_time = Component(EpicsSignalRO, "pulse_time")
-    freq = Component(EpicsSignalRO, "freq", kind="config")
+    power = Component(EpicsSignalRO, "laser:power")
+    pulse_id = Component(EpicsSignalRO, "EPAC-DEV:PULSE:PULSE_ID", name="pulse_id")
+
+
+#   Legacy laser variables for when laser is not set by pulse-id-gen
+#    pulse_id = Component(EpicsSignalRO, "pulse_id")
+#    freq = Component(EpicsSignalRO, "freq", kind="config")
 
 
 # Heavily influenced by _wait_for_value function in epics_pvs.py, does block
@@ -85,7 +88,7 @@ def pulse_sync(detectors, motor, laser, start, stop, steps):
         yield from bps.unstage(det)
 
 
-# Custom plan to move motor based on detector status, designed if detector being triggered outside of bluesky
+# Custom plan to move motor based on detector status, designed for when detector is being triggered outside of bluesky
 def passive_scan(detectors, motor, start, stop, steps, adStatus, pulse_ID):
     step_size = (stop - start) / (steps - 1)
 
@@ -119,7 +122,8 @@ det.cam.stage_sigs["acquire_time"] = 0.05
 
 motor1 = EpicsMotor("motorS:axis1", name="motor1")
 
-laser1 = MyLaser("laser:", name="laser1")
+# laser1 = MyLaser("laser:", name="laser1")
+laser1 = MyLaser("", name="laser1")
 laser1.wait_for_connection()
 
 adStatus = EpicsSignalRO("ADT:USER1:CAM:DetectorState_RBV", name="adStatus")
@@ -128,9 +132,15 @@ pulse_ID = EpicsSignalRO("EPAC-DEV:PULSE:PULSE_ID", name="pulse_ID")
 RE = RunEngine()
 
 bec = BestEffortCallback()
-db = Broker.named("temp")  # This creates a temporary database
+# db = Broker.named("temp")  # This creates a temporary database
+db = Broker.named("mongo")  # Connects to MongoDB database
 
 # Send all metadata/data captured to the BestEffortCallback.
 RE.subscribe(bec)
 # Insert all metadata/data captured into db.
 RE.subscribe(db.insert)
+
+
+# Examples of how to run both scans:
+# RE(pulse_sync([det], motor1, laser1, -10, 10, 11))
+# RE(passive_scan([det], motor1, -10, 10, 11, adStatus , pulse_ID))
