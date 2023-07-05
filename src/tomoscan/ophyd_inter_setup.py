@@ -10,7 +10,7 @@ from ophyd import Kind
 from ophyd.areadetector import cam
 from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
 from ophyd.areadetector.filestore_mixins import FileStoreTIFFIterativeWrite
-from ophyd.areadetector.plugins import HDF5Plugin_V34, TIFFPlugin_V34
+from ophyd.areadetector.plugins import HDF5Plugin_V34
 from bluesky import RunEngine
 from bluesky.plans import count, scan
 from bluesky.plan_stubs import mv
@@ -21,10 +21,6 @@ from databroker import Broker
 
 
 class MyHDF5Plugin(FileStoreHDF5IterativeWrite, HDF5Plugin_V34):
-    ...
-
-
-class MyTIFFPlugin(FileStoreTIFFIterativeWrite, TIFFPlugin_V34):
     ...
 
 
