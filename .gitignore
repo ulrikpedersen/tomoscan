@@ -64,6 +64,9 @@ target/
 .venv*
 venv*
 
+# .env
+.env
+
 # further build artifacts
 lockfiles/
 
