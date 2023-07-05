@@ -16,8 +16,49 @@ from bluesky.plans import count, scan
 from bluesky.plan_stubs import mv
 import bluesky.plan_stubs as bps
 
+import math
+
 from bluesky.callbacks.best_effort import BestEffortCallback
 from databroker import Broker
+
+
+def stepTime(dist: float, accl: float, vel: float, add_time=0.0) -> float:
+    """
+    Estimates step time of motor
+
+    Parameters:
+    dist (float): Step distance
+    accl (float): Time to accelerate to target velocity
+    vel (float): Target velocity
+    add_time (float): Optional additional time to add to step
+
+    Returns:
+    float: Time to travel step distance
+    """
+    if vel * accl < dist:  # Reaches target velocity, velocity is trapesium
+        return accl + dist / vel + add_time
+    else:
+        return 2 * math.sqrt(dist * accl / vel) + add_time
+
+
+def motorStepTime(
+    motor: EpicsMotor, start: float, stop: float, steps: int, add_time=0.0
+) -> float:
+    """
+    Estimates step time of motor in scan
+
+    Parameters:
+    motor (EpicsMotor): motor being moved
+    start (float): motor start positon
+    stop (float): motor end position
+    steps (int): number of steps in scan
+    add_time (float): Optional additional time to add to step
+
+    Returns:
+    float: Time to travel step distance
+    """
+    step_size = abs((stop - start) / (steps - 1))
+    return stepTime(step_size, motor.acceleration.get(), motor.velocity.get(), add_time)
 
 
 class MyHDF5Plugin(FileStoreHDF5IterativeWrite, HDF5Plugin_V34):
