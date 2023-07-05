@@ -1,4 +1,4 @@
 #!/bin/bash
-TOMOFILE=/home/bar/Projects/tomoscan
+DISPLAY_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
-phoebus -resource "file:$TOMOFILE/display/overview.bob?P=ADT:USER1:&app=display_runtime"
+phoebus -resource "file:$DISPLAY_PATH/overview.bob?P=ADT:USER1:&app=display_runtime"
