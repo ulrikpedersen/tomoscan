@@ -35,11 +35,6 @@ class MyDetector(SingleTrigger, AreaDetector):
         "HDF1:",
         write_path_template="/out/%Y/%m/%d",
     )
-    tiff1 = ADComponent(
-        MyTIFFPlugin,
-        "TIFF1:",
-        write_path_template="/out/%Y/%m/%d",
-    )
 
 
 class MyLaser(Device):
