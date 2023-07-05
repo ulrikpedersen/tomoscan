@@ -8,10 +8,6 @@
     "url": "https://ulrikpedersen.github.io/tomoscan/.devcontainer/"
   },
   {
-    "version": ".github",
-    "url": "https://ulrikpedersen.github.io/tomoscan/.github/"
-  },
-  {
     "version": ".vscode",
     "url": "https://ulrikpedersen.github.io/tomoscan/.vscode/"
   },
