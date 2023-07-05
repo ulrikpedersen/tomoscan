@@ -12,7 +12,7 @@ classifiers = [
 description = "Demonstration of a tomography scan orchestrated by BlueSky"
 dependencies = [
     "bluesky",
-    "git+https://github.com/bluesky/ophyd.git@v1.8.0",
+    "ophyd",
     "pyepics",
     "npyscreen",
     "cothread",
