@@ -17,6 +17,8 @@ Documentation  https://ulrikpedersen.github.io/tomoscan
 Releases       https://github.com/ulrikpedersen/tomoscan/releases
 ============== ==============================================================
 
+
+
 Some very brief examples of use:
 
 .. code-block:: python
@@ -40,6 +42,11 @@ Some very brief examples of use:
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
     :target: https://opensource.org/licenses/Apache-2.0
     :alt: Apache License
+
+
+Download and install instructions
+=================================
+
 
 ..
     Anything below this line is used when viewing README.rst and will be replaced
