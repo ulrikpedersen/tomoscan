@@ -1,21 +1,27 @@
 import time as ttime
 
-from ophyd import ADComponent
-from ophyd import AreaDetector, SingleTrigger
-from ophyd import EpicsMotor
-from ophyd import Component, Device, EpicsSignal, EpicsSignalRO
-from ophyd import Kind
-from ophyd.areadetector import cam
-from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
-from ophyd.areadetector.filestore_mixins import FileStoreTIFFIterativeWrite
-from ophyd.areadetector.plugins import HDF5Plugin_V34, TIFFPlugin_V34
-from bluesky import RunEngine
-from bluesky.plans import count, scan
-from bluesky.plan_stubs import mv
 import bluesky.plan_stubs as bps
-
+from bluesky import RunEngine
 from bluesky.callbacks.best_effort import BestEffortCallback
+from bluesky.plan_stubs import mv
+from bluesky.plans import count, scan  # noqa F401
 from databroker import Broker
+from ophyd import (
+    ADComponent,
+    AreaDetector,
+    Component,
+    Device,
+    EpicsMotor,
+    EpicsSignal,
+    EpicsSignalRO,
+    SingleTrigger,
+)
+from ophyd.areadetector import cam
+from ophyd.areadetector.filestore_mixins import (
+    FileStoreHDF5IterativeWrite,
+    FileStoreTIFFIterativeWrite,
+)
+from ophyd.areadetector.plugins import HDF5Plugin_V34, TIFFPlugin_V34
 
 
 class MyHDF5Plugin(FileStoreHDF5IterativeWrite, HDF5Plugin_V34):
@@ -43,6 +49,7 @@ class MyDetector(SingleTrigger, AreaDetector):
 class MyLaser(Device):
     power = Component(EpicsSignalRO, "power")
     pulse_id = Component(EpicsSignalRO, "pulse_id")
+    pulse_time = Component(EpicsSignalRO, "pulse_time")
     freq = Component(EpicsSignalRO, "freq", kind="config")
 
 

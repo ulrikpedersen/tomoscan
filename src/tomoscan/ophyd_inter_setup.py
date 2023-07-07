@@ -2,22 +2,25 @@
 
 import time as ttime
 
-from ophyd import ADComponent
-from ophyd import AreaDetector, SingleTrigger
-from ophyd import EpicsMotor
-from ophyd import Component, Device, EpicsSignal, EpicsSignalRO
-from ophyd import Kind
+import bluesky.plan_stubs as bps
+from bluesky import RunEngine
+from bluesky.callbacks.best_effort import BestEffortCallback
+from bluesky.plan_stubs import mv
+from bluesky.plans import count, scan  # noqa F401
+from databroker import Broker
+from ophyd import (
+    ADComponent,
+    AreaDetector,
+    Component,
+    Device,
+    EpicsMotor,
+    EpicsSignal,
+    EpicsSignalRO,
+    SingleTrigger,
+)
 from ophyd.areadetector import cam
 from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
-from ophyd.areadetector.filestore_mixins import FileStoreTIFFIterativeWrite
 from ophyd.areadetector.plugins import HDF5Plugin_V34
-from bluesky import RunEngine
-from bluesky.plans import count, scan
-from bluesky.plan_stubs import mv
-import bluesky.plan_stubs as bps
-
-from bluesky.callbacks.best_effort import BestEffortCallback
-from databroker import Broker
 
 
 class MyHDF5Plugin(FileStoreHDF5IterativeWrite, HDF5Plugin_V34):
@@ -79,7 +82,8 @@ def pulse_sync(detectors, motor, laser, start, stop, steps):
         yield from bps.unstage(det)
 
 
-# Custom plan to move motor based on detector status, designed for when detector is being triggered outside of bluesky
+# Custom plan to move motor based on detector status
+# designed for when detector is being triggered outside of bluesky
 def passive_scan(detectors, motor, start, stop, steps, adStatus, pulse_ID):
     step_size = (stop - start) / (steps - 1)
 
