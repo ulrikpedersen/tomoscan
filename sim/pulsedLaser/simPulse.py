@@ -1,5 +1,5 @@
-import time as ttime
 import argparse
+import time as ttime
 
 import cothread
 from softioc import builder, softioc
@@ -8,7 +8,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--frequency", default=1, type=float)
 parser.add_argument("-l", "--length", default=0.01, type=float, help="The pulse length")
 parser.add_argument("--standalone", action="store_true", help="The pulse length")
-# In standalone mode the power PV is set to 1 by an external signal generator pulse length remains set by this script
+# In standalone mode the power PV is set to 1 by an external signal generator
+# The pulse length remains set by this script
 
 args = parser.parse_args()
 
