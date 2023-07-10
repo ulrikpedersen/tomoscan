@@ -12,6 +12,20 @@ Prerequisites
 
 Setup
 -------------
-* Clone this repository using :code:`git clone git@github.com:ulrikpedersen/tomoscan.git`
-* Build the top level bluesky environment Docker container by running :code:`docker build -t tomoscan .`
-* Navigate to the sim folder and build the docker files for the simulation and IOCs by running :code:`./build.sh`
+Clone this repository using:
+
+::
+
+    $ git clone clone git@github.com:ulrikpedersen/tomoscan.git
+
+Build the top level bluesky environment Docker container by running
+
+::
+    
+    $ docker build -t tomoscan .
+
+Navigate to the sim folder and build the docker files for the simulation and IOCs by running
+
+::
+    
+    $ ./build.sh
