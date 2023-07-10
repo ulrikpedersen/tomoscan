@@ -18,7 +18,7 @@ import tomoscan
 project = "tomoscan"
 
 # The full version, including alpha/beta/rc tags.
-release = tomoscan.__version__
+release = "0.1.0"
 
 # The short X.Y version.
 if "+" in release:
