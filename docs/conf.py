@@ -10,8 +10,6 @@ from subprocess import check_output
 
 import requests
 
-import tomoscan
-
 # -- General configuration ------------------------------------------------
 
 # General information about the project.
