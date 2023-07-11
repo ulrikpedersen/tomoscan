@@ -8,10 +8,19 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
 ]
 description = "Demonstration of a tomography scan orchestrated by BlueSky"
-dependencies = [] # Add project dependencies here, e.g. ["click", "numpy"]
+dependencies = [
+    "bluesky",
+    "ophyd",
+    "pyepics",
+    "npyscreen",
+    "cothread",
+    "softioc",
+    "ipython",
+    "databroker",
+    "matplotlib",
+] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
 license.file = "LICENSE"
 readme = "README.rst"

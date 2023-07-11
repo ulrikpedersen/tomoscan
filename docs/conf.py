@@ -10,15 +10,14 @@ from subprocess import check_output
 
 import requests
 
-import tomoscan
-
 # -- General configuration ------------------------------------------------
 
 # General information about the project.
 project = "tomoscan"
 
 # The full version, including alpha/beta/rc tags.
-release = tomoscan.__version__
+# release = tomoscan.__version__
+release = "0.1.0"
 
 # The short X.Y version.
 if "+" in release:

@@ -64,6 +64,20 @@ target/
 .venv*
 venv*
 
+# .env
+.env
+
 # further build artifacts
 lockfiles/
 
+bin/
+dbd/
+db/
+lib/
+*O.linux-x86_64*
+*O.Common*
+*envPaths
+
+# Output files
+data/*
+!data/.placeholder
