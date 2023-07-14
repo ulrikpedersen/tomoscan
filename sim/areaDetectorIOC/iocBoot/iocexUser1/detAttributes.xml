@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<Attributes>
-    <Attribute name="PulseID" type="EPICS_PV" source="laser:pulse_id" dbrtype="DBR_NATIVE" description="ID of pulse triggering image"/>
-    <Attribute name="PulseTime" type="EPICS_PV" source="laser:pulse_time" dbrtype="DBR_NATIVE" description="Time of pulse start"/>
-    <Attribute name="LaserFreq" type="EPICS_PV" source="laser:freq" dbrtype="DBR_NATIVE" description="Frequency of laser pulses"/>
-    <Attribute name="MotorPos" type="EPICS_PV" source="motorS:axis1.RBV" dbrtype="DBR_NATIVE" description="Motor position"/>
-</Attributes>
