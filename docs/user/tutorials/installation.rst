@@ -29,3 +29,10 @@ Navigate to the sim folder and build the docker files for the simulation and IOC
 ::
     
     $ ./build.sh
+
+A .env file is used to supply information on the CLF docker containers used in the docker compose environment.
+Copy the example-dotenv file to create a local .env file as follows:
+
+::
+
+    $ cp example-dotenv .env
