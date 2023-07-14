@@ -16,6 +16,10 @@
     "url": "https://ulrikpedersen.github.io/tomoscan/docs/"
   },
   {
+    "version": "graylog",
+    "url": "https://ulrikpedersen.github.io/tomoscan/graylog/"
+  },
+  {
     "version": "src",
     "url": "https://ulrikpedersen.github.io/tomoscan/src/"
   },
