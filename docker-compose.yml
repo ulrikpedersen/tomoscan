@@ -1,16 +1,29 @@
-version: "3.2"
+version: "3.8"
 services:
   motor-sim:
     image: sim-pmac
     stop_signal: "SIGKILL"
+    depends_on:
+      - graylog
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   motor-ioc:
     image: pmac-ioc
     stdin_open: true
     depends_on:
       - motor-sim
+      - graylog
     stop_signal: "SIGKILL"
     env_file:
       - epics.env
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   areadetector:
     image: ad-ioc
     stdin_open: true
@@ -21,6 +34,13 @@ services:
         target: /out
     env_file:
       - epics.env
+    depends_on:
+      - graylog
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   pulse-sim:
     image: sim-pulse
     command:
@@ -28,24 +48,46 @@ services:
     stop_signal: "SIGKILL"
     env_file:
       - epics.env
+    depends_on:
+      - graylog
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   gateway:
     image: ${DOCKER_TAG_BASE}epics-gateway-run:${DOCKER_TAG_VERSION}
     ports:
       - "50640:50640"
-      - "5064:50640/udp"
+      - "5064:50640/udp"  # MOFIFY the port 5064 to something else when running multiple instances on the same subnet.
     env_file:
       - epics.env
+    depends_on:
+      - graylog
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.1
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    depends_on:
+      - graylog
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   kafka:
     image: confluentinc/cp-kafka:7.3.1
     ports:
       - "9092:9092"
     depends_on:
       - zookeeper
+      - graylog
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
@@ -54,6 +96,11 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   pulse-id-gen:
     image: ${DOCKER_TAG_BASE}pulse-id-gen:${DOCKER_TAG_VERSION}
     command:
@@ -71,12 +118,89 @@ services:
     stop_signal: "SIGINT"
     depends_on:
       - kafka
+      - graylog
     volumes:
       - type: bind
         source: ./pulse-id-gen.ini
         target: /app/config.ini
         read_only: true
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
+
   mongo-db:
     image: mongo
     ports:
       - "27017:27017"
+
+  # Setting up Graylog services
+  # Based on this example: https://github.com/Graylog2/docker-compose/blob/main/open-core/docker-compose.yml 
+  # but with a 'gl-' prefix on service names as we have another mongodb elsewhere.
+  gl-mongodb:
+    image: "mongo:5.0"
+    volumes:
+      - "mongodb_data:/data/db"
+    restart: "on-failure"
+
+  gl-opensearch:
+    image: "opensearchproject/opensearch:2.4.0"
+    environment:
+      - "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "bootstrap.memory_lock=true"
+      - "discovery.type=single-node"
+      - "action.auto_create_index=false"
+      - "plugins.security.ssl.http.enabled=false"
+      - "plugins.security.disabled=true"
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - "os_data:/usr/share/opensearch/data"
+    restart: "on-failure"
+
+  graylog:
+    hostname: "server"
+    image: "${GRAYLOG_IMAGE:-graylog/graylog:5.0}"
+    depends_on:
+      gl-opensearch:
+        condition: "service_started"
+      gl-mongodb:
+        condition: "service_started"
+    entrypoint: "/usr/bin/tini -- wait-for-it gl-opensearch:9200 --  /docker-entrypoint.sh"
+    environment:
+      GRAYLOG_NODE_ID_FILE: "/usr/share/graylog/data/config/node-id"
+      GRAYLOG_PASSWORD_SECRET: "${GRAYLOG_PASSWORD_SECRET:?Please configure GRAYLOG_PASSWORD_SECRET in the .env file}"
+      GRAYLOG_ROOT_PASSWORD_SHA2: "${GRAYLOG_ROOT_PASSWORD_SHA2:?Please configure GRAYLOG_ROOT_PASSWORD_SHA2 in the .env file}"
+      GRAYLOG_HTTP_BIND_ADDRESS: "0.0.0.0:9000"
+      GRAYLOG_HTTP_EXTERNAL_URI: "http://localhost:9000/"
+      GRAYLOG_ELASTICSEARCH_HOSTS: "http://gl-opensearch:9200"
+      GRAYLOG_MONGODB_URI: "mongodb://gl-mongodb:27017/graylog"
+    ports:
+      # - "5044:5044/tcp" # Beats
+      # - "5140:5140/udp" # Syslog
+      # - "5140:5140/tcp" # Syslog
+      # - "5555:5555/tcp" # RAW TCP
+      # - "5555:5555/udp" # RAW TCP
+      - "9000:9000/tcp" # Server API
+      - "12201:12201/tcp" # GELF TCP
+      - "12201:12201/udp" # GELF UDP
+      #- "10000:10000/tcp" # Custom TCP port
+      #- "10000:10000/udp" # Custom UDP port
+      # - "13301:13301/tcp" # Forwarder data
+      # - "13302:13302/tcp" # Forwarder config
+    volumes:
+      - "graylog_data:/usr/share/graylog/data/data"
+      - "graylog_journal:/usr/share/graylog/data/journal"
+    restart: "on-failure"
+
+volumes:
+  mongodb_data:
+  os_data:
+  graylog_data:
+  graylog_journal:
