@@ -76,7 +76,7 @@ db/
 lib/
 *O.linux-x86_64*
 *O.Common*
-sim/areaDetectorIOC/iocBoot/iocexUser1/envPaths
+*envPaths
 
 # Output files
 data/*

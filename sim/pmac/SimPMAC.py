@@ -1,11 +1,11 @@
-import sys
-import threading
-from time import sleep
-import time
 import logging
 import socketserver
-import npyscreen
+import sys
+import threading
+import time
+from time import sleep
 
+import npyscreen
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
@@ -75,7 +75,7 @@ class PmacThread:
         self.simulator_thread.daemon = True
         self.simulator_thread.start()
         # Setup the server
-        #HOST, PORT = "localhost", int(port)
+        # HOST, PORT = "localhost", int(port)
         HOST, PORT = "0.0.0.0", int(port)
         self.server = PMACServer((HOST, PORT), MyTCPHandler, simulator=self.simulator)
         # Start a thread with the server -- that thread will then start one
