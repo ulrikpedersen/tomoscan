@@ -3,6 +3,7 @@
 import time as ttime
 
 import bluesky.plan_stubs as bps
+import databroker
 from bluesky import RunEngine
 from bluesky.callbacks.best_effort import BestEffortCallback
 from bluesky.plan_stubs import mv
@@ -112,12 +113,13 @@ RE = RunEngine()
 
 bec = BestEffortCallback()
 # db = Broker.named("temp")  # This creates a temporary database
-db = Broker.named("mongo")  # Connects to MongoDB database
+# db = Broker.named("mongo")  # Connects to MongoDB database
+db = databroker.catalog["mongo"]
 
 # Send all metadata/data captured to the BestEffortCallback.
 RE.subscribe(bec)
 # Insert all metadata/data captured into db.
-RE.subscribe(db.insert)
+RE.subscribe(db.v1.insert)
 
 
 prefix = "ADT:USER1:"
