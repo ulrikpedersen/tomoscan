@@ -114,12 +114,12 @@ RE = RunEngine()
 bec = BestEffortCallback()
 # db = Broker.named("temp")  # This creates a temporary database
 # db = Broker.named("mongo")  # Connects to MongoDB database
-db = databroker.catalog["mongo"]
+catalog = databroker.catalog["mongo"]
 
 # Send all metadata/data captured to the BestEffortCallback.
 RE.subscribe(bec)
-# Insert all metadata/data captured into db.
-RE.subscribe(db.v1.insert)
+# Insert all metadata/data captured into the catalog.
+RE.subscribe(catalog.v1.insert)
 
 
 prefix = "ADT:USER1:"
