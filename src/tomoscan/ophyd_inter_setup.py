@@ -32,7 +32,7 @@ class MyDetector(SingleTrigger, AreaDetector):
     hdf1 = ADComponent(
         MyHDF5Plugin,
         "HDF1:",
-        write_path_template="/out/%Y/%m/%d",
+        write_path_template="/out/%Y/%m/%d/",
     )
 
 
@@ -108,6 +108,18 @@ def passive_scan(detectors, motor, start, stop, steps, adStatus, pulse_ID):
     yield from bps.close_run()
 
 
+RE = RunEngine()
+
+bec = BestEffortCallback()
+# db = Broker.named("temp")  # This creates a temporary database
+db = Broker.named("mongo")  # Connects to MongoDB database
+
+# Send all metadata/data captured to the BestEffortCallback.
+RE.subscribe(bec)
+# Insert all metadata/data captured into db.
+RE.subscribe(db.insert)
+
+
 prefix = "ADT:USER1:"
 det = MyDetector(prefix, name="det")
 det.hdf1.create_directory.put(-5)
@@ -124,17 +136,6 @@ laser1.wait_for_connection()
 
 adStatus = EpicsSignalRO("ADT:USER1:CAM:DetectorState_RBV", name="adStatus")
 pulse_ID = EpicsSignalRO("EPAC-DEV:PULSE:PULSE_ID", name="pulse_ID")
-
-RE = RunEngine()
-
-bec = BestEffortCallback()
-# db = Broker.named("temp")  # This creates a temporary database
-db = Broker.named("mongo")  # Connects to MongoDB database
-
-# Send all metadata/data captured to the BestEffortCallback.
-RE.subscribe(bec)
-# Insert all metadata/data captured into db.
-RE.subscribe(db.insert)
 
 
 # Examples of how to run both scans:
