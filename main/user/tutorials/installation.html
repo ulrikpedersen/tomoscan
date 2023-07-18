@@ -52,7 +52,7 @@
     <link rel="icon" href="../../_static/dls-favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Run in a container" href="../how-to/run-container.html" />
+    <link rel="next" title="Running a scan" href="../how-to/run-scan.html" />
     <link rel="prev" title="User Guide" href="../index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -380,7 +380,7 @@ document.write(`
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../how-to/run-container.html">Run in a container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/run-scan.html">Running a scan</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul class="nav bd-sidenav">
@@ -449,37 +449,33 @@ document.write(`
                   
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
-<section id="check-your-version-of-python">
-<h2>Check your version of python<a class="headerlink" href="#check-your-version-of-python" title="Permalink to this heading">#</a></h2>
-<p>You will need python 3.8 or later. You can check your version of python by
-typing into a terminal:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 --version
-</pre></div>
-</div>
+<p>These instructions assume the use of Ubuntu 22.04. However, given that all code is run within Docker containers this system would be expected to run easily on other systems.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Docker is required to be installed on your PC. Instructions to install Docker Engine on Ubuntu can be found at <a class="reference external" href="https://docs.docker.com/engine/install/ubuntu/">https://docs.docker.com/engine/install/ubuntu/</a></p></li>
+<li><p>An installation of Phoebus is recommended to observe the scans. Phoebus can be downloaded from <a class="reference external" href="https://controlssoftware.sns.ornl.gov/css_phoebus/">https://controlssoftware.sns.ornl.gov/css_phoebus/</a></p></li>
+<li><p>If using VSCode installing the H5Web extension allows the easy viewing of the hdf output files from scans</p></li>
+<li><p>To use EPAC Docker images from ghcr.io you need to ensure that you have an access token setup. This can be done by following the instructions <a class="reference external" href="https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic">here</a></p></li>
+</ul>
 </section>
-<section id="create-a-virtual-environment">
-<h2>Create a virtual environment<a class="headerlink" href="#create-a-virtual-environment" title="Permalink to this heading">#</a></h2>
-<p>It is recommended that you install into a “virtual environment” so this
-installation will not interfere with any existing Python software:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m venv /path/to/venv
-$ source /path/to/venv/bin/activate
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<p>Clone this repository using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone clone git@github.com:ulrikpedersen/tomoscan.git
 </pre></div>
 </div>
-</section>
-<section id="installing-the-library">
-<h2>Installing the library<a class="headerlink" href="#installing-the-library" title="Permalink to this heading">#</a></h2>
-<p>You can now use <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install the library and its dependencies:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m pip install tomoscan
+<p>Build the top level bluesky environment Docker container by running</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker build -t tomoscan .
 </pre></div>
 </div>
-<p>If you require a feature that is not currently released you can also install
-from github:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m pip install git+https://github.com/ulrikpedersen/tomoscan.git
+<p>Navigate to the sim folder and build the docker files for the simulation and IOCs by running</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./build.sh
 </pre></div>
 </div>
-<p>The library should now be installed and the commandline interface on your path.
-You can check the version that has been installed by typing:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tomoscan --version
+<p>A .env file is used to supply information on the CLF docker containers used in the docker compose environment.
+Copy the example-dotenv file to create a local .env file as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cp example-dotenv .env
 </pre></div>
 </div>
 </section>
@@ -506,11 +502,11 @@ You can check the version that has been installed by typing:</p>
       </div>
     </a>
     <a class="right-next"
-       href="../how-to/run-container.html"
+       href="../how-to/run-scan.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Run in a container</p>
+        <p class="prev-next-title">Running a scan</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -532,9 +528,8 @@ You can check the version that has been installed by typing:</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-your-version-of-python">Check your version of python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-virtual-environment">Create a virtual environment</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-library">Installing the library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 </ul>
   </nav></div>
 
