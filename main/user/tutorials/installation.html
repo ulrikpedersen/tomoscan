@@ -377,6 +377,7 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation</a></li>
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="nav bd-sidenav">
@@ -480,6 +481,46 @@ Copy the example-dotenv file to create a local .env file as follows:</p>
 </div>
 </section>
 </section>
+<section id="bring-up-the-runtime-environment">
+<h1>Bring up the runtime environment<a class="headerlink" href="#bring-up-the-runtime-environment" title="Permalink to this heading">#</a></h1>
+<p>The runtime environment consists of a number of services which can be brought up/down on a local development machine using docker compose.</p>
+<section id="start-and-access-logging-service">
+<span id="logging-service"></span><h2>Start and access logging service<a class="headerlink" href="#start-and-access-logging-service" title="Permalink to this heading">#</a></h2>
+<p>The many services can log into a single location for easy searching and monitoring. A separate docker compose file named <code class="code docutils literal notranslate"><span class="pre">graylog-compose.yml</span></code> can be used to bring up a Graylog stack.</p>
+<p>First configure a graylog admin account password:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat example-graylog-dotenv &gt;&gt; .env
+</pre></div>
+</div>
+<p>Now edit the <code class="code docutils literal notranslate"><span class="pre">.env</span></code> file and fill in the <code class="code docutils literal notranslate"><span class="pre">GRAYLOG_ROOT_PASSWORD_SHA2</span></code> and <code class="code docutils literal notranslate"><span class="pre">GRAYLOG_PASSWORD_SECRET</span></code> as per the comments in the file. For example if choosing a strong password like ‘mysupersecretpassword1234’:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pwgen -N 1 -s 96
+MXOuTyOQVxSmLL9lxGanDHyw8az3S7PkDmzlKFLfPH081xFgxmcMxwY3DsQxDN5cjfFGS01v7RtDVJRj9dxbGZht4IN992l6
+</pre></div>
+</div>
+<p>Then set <code class="code docutils literal notranslate"><span class="pre">GRAYLOG_PASSWORD_SECRET=MXOuTyOQVxSmLL9lxGanDHyw8az3S7PkDmzlKFLfPH081xFgxmcMxwY3DsQxDN5cjfFGS01v7RtDVJRj9dxbGZht4IN992l6</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ echo -n mysupersecretpassword1234 | shasum -a 256
+3645ac65291ec7ec95d7d3697c9309b0edfbdbad7e904a39406a88a6b80bca28  -
+</pre></div>
+</div>
+<p>Then set <code class="code docutils literal notranslate"><span class="pre">GRAYLOG_ROOT_PASSWORD_SHA2=3645ac65291ec7ec95d7d3697c9309b0edfbdbad7e904a39406a88a6b80bca28</span></code></p>
+<p>Now you can start the graylog services with docker compose:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker compose -f graylog-compose.yml up -d
+</pre></div>
+</div>
+<p>Connect to the graylog web-interface on <a class="reference external" href="http://localhost:9000">http://localhost:9000</a> and login with the <code class="code docutils literal notranslate"><span class="pre">admin</span></code> user and the password selected above. On the graylog web interface, navigate to “Search” (top left menu). Then select a time-window or “all messages” (top left clock) and click the green search button. Start the automatic updating and set the poll to “1 Second” (top right corner). Now you are ready to see logs when starting up the control system services in the next steps…</p>
+</section>
+<section id="start-the-control-system">
+<h2>Start the Control System<a class="headerlink" href="#start-the-control-system" title="Permalink to this heading">#</a></h2>
+<p>The simulation control system with motor, and areaDetector IOCs as well as laser pulse simulation can be started with docker compose:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker compose up -d
+</pre></div>
+</div>
+<p>Logs from the services should be available on the <a class="reference internal" href="#logging-service"><span class="std std-ref">Graylog web interface</span></a>.</p>
+<p>The services can be stopped/downed with docker compose:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker compose [stop|down]
+</pre></div>
+</div>
+</section>
+</section>
 
 
                 </article>
@@ -528,9 +569,18 @@ Copy the example-dotenv file to create a local .env file as follows:</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Installation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#bring-up-the-runtime-environment">Bring up the runtime environment</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-and-access-logging-service">Start and access logging service</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-control-system">Start the Control System</a></li>
+</ul>
+</li>
+</ul>
+
   </nav></div>
 
   <div class="sidebar-secondary-item">

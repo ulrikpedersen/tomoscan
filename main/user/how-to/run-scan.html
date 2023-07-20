@@ -377,6 +377,7 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/installation.html">Installation</a></li>
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="current nav bd-sidenav">
@@ -450,7 +451,6 @@ document.write(`
   <section id="running-a-scan">
 <h1>Running a scan<a class="headerlink" href="#running-a-scan" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
-<li><p>Start the simulators and IOCs by running <code class="code docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code></p></li>
 <li><p>Start the interactive bluesky environment. This is best done within the same network as the docker-compose environment which can be achieved by running: <code class="code docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--net</span> <span class="pre">tomoscan_default</span> <span class="pre">-it</span> <span class="pre">tomoscan</span></code></p></li>
 <li><p>Start the phoebus screen to monitor the scan’s progress. Navigate to the display folder and run <code class="code docutils literal notranslate"><span class="pre">./startOvervirew.sh</span></code></p></li>
 </ul>
