@@ -8,7 +8,6 @@ from bluesky import RunEngine
 from bluesky.callbacks.best_effort import BestEffortCallback
 from bluesky.plan_stubs import mv
 from bluesky.plans import count, scan  # noqa F401
-from databroker import Broker
 from ophyd import (
     ADComponent,
     AreaDetector,
