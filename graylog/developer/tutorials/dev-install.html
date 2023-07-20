@@ -382,13 +382,10 @@ document.write(`
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../how-to/contribute.html">Contributing to the project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../how-to/build-docs.html">Build the docs using sphinx</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../how-to/run-tests.html">Run the tests using pytest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../how-to/static-analysis.html">Run static analysis using mypy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../how-to/lint.html">Run linting using pre-commit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../how-to/update-tools.html">Update the tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../how-to/make-release.html">Make a release</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../how-to/pin-requirements.html">Pinning Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../how-to/test-container.html">Container Local Build and Test</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul class="nav bd-sidenav">
@@ -460,61 +457,43 @@ document.write(`
                   
   <section id="developer-install">
 <h1>Developer install<a class="headerlink" href="#developer-install" title="Permalink to this heading">#</a></h1>
-<p>These instructions will take you through the minimal steps required to get a dev
-environment setup, so you can run the tests locally.</p>
-<section id="clone-the-repository">
-<h2>Clone the repository<a class="headerlink" href="#clone-the-repository" title="Permalink to this heading">#</a></h2>
-<p>First clone the repository locally using <a class="reference external" href="https://git-scm.com/downloads">Git</a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone git://github.com/ulrikpedersen/tomoscan.git
+<p>These instructions assume the use of Ubuntu 22.04. However, given that all code is run within Docker containers this system would be expected to run easily on other systems.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Docker is required to be installed on your PC. Instructions to install Docker Engine on Ubuntu can be found at <a class="reference external" href="https://docs.docker.com/engine/install/ubuntu/">https://docs.docker.com/engine/install/ubuntu/</a></p></li>
+<li><p>An installation of Phoebus is recommended to observe the scans. Phoebus can be downloaded from <a class="reference external" href="https://controlssoftware.sns.ornl.gov/css_phoebus/">https://controlssoftware.sns.ornl.gov/css_phoebus/</a></p></li>
+<li><p>If using VSCode installing the H5Web extension allows the easy viewing of the hdf output files from scans</p></li>
+<li><p>To use EPAC Docker images from ghcr.io you need to ensure that you have an access token setup. This can be done by following the instructions <a class="reference external" href="https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic">here</a></p></li>
+</ul>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<p>Clone this repository using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone clone git@github.com:ulrikpedersen/tomoscan.git
 </pre></div>
 </div>
-</section>
-<section id="install-dependencies">
-<h2>Install dependencies<a class="headerlink" href="#install-dependencies" title="Permalink to this heading">#</a></h2>
-<p>You can choose to either develop on the host machine using a <a class="reference external" href="https://docs.python.org/3/library/venv.html#module-venv" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">venv</span></code></a> (which
-requires python 3.8 or later) or to run in a container under <a class="reference external" href="https://code.visualstudio.com/">VSCode</a></p>
-<div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
-</input><label class="sd-tab-label" for="sd-tab-item-0">
-Local virtualenv</label><div class="sd-tab-content docutils">
+<p>Build the top level bluesky environment Docker container by running</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker build -t tomoscan .
+</pre></div>
+</div>
+<p>Navigate to the sim folder and build the docker files for the simulation and IOCs by running</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./build.sh
+</pre></div>
+</div>
+<p>A .env file is used to supply information on the CLF docker containers used in the docker compose environment.
+Copy the example-dotenv file to create a local .env file as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cp example-dotenv .env
+</pre></div>
+</div>
+<p>It can be easier to make changes to the python script which launches bluesky <code class="code docutils literal notranslate"><span class="pre">src/ophyd_inter_setup.py</span></code> locally rather than in a Docker container during development.
+In that case use a python venv to install the dependencies of the python script as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd tomoscan
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip install -e &#39;.[dev]&#39;
 </pre></div>
 </div>
-</div>
-<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
-</input><label class="sd-tab-label" for="sd-tab-item-1">
-VSCode devcontainer</label><div class="sd-tab-content docutils">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ vscode tomoscan
-# Click on &#39;Reopen in Container&#39; when prompted
-# Open a new terminal
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="see-what-was-installed">
-<h2>See what was installed<a class="headerlink" href="#see-what-was-installed" title="Permalink to this heading">#</a></h2>
-<p>To see a graph of the python package dependency tree type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pipdeptree
-</pre></div>
-</div>
-</section>
-<section id="build-and-test">
-<h2>Build and test<a class="headerlink" href="#build-and-test" title="Permalink to this heading">#</a></h2>
-<p>Now you have a development environment you can run the tests in a terminal:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -p
-</pre></div>
-</div>
-<p>This will run in parallel the following checks:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="../how-to/build-docs.html"><span class="doc">Build the docs using sphinx</span></a></p></li>
-<li><p><a class="reference internal" href="../how-to/run-tests.html"><span class="doc">Run the tests using pytest</span></a></p></li>
-<li><p><a class="reference internal" href="../how-to/static-analysis.html"><span class="doc">Run static analysis using mypy</span></a></p></li>
-<li><p><a class="reference internal" href="../how-to/lint.html"><span class="doc">Run linting using pre-commit</span></a></p></li>
-</ul>
 </section>
 </section>
 
@@ -565,10 +544,8 @@ VSCode devcontainer</label><div class="sd-tab-content docutils">
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clone-the-repository">Clone the repository</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-dependencies">Install dependencies</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-what-was-installed">See what was installed</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-and-test">Build and test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 </ul>
   </nav></div>
 
