@@ -1,38 +1,38 @@
 Installation
 ============
 
-Check your version of python
-----------------------------
+These instructions assume the use of Ubuntu 22.04. However, given that all code is run within Docker containers this system would be expected to run easily on other systems.
 
-You will need python 3.8 or later. You can check your version of python by
-typing into a terminal::
+Prerequisites
+----------------
+* Docker is required to be installed on your PC. Instructions to install Docker Engine on Ubuntu can be found at https://docs.docker.com/engine/install/ubuntu/
+* An installation of Phoebus is recommended to observe the scans. Phoebus can be downloaded from https://controlssoftware.sns.ornl.gov/css_phoebus/
+* If using VSCode installing the H5Web extension allows the easy viewing of the hdf output files from scans
+* To use EPAC Docker images from ghcr.io you need to ensure that you have an access token setup. This can be done by following the instructions `here <https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic>`_
 
-    $ python3 --version
+Setup
+-------------
+Clone this repository using:
 
+::
 
-Create a virtual environment
-----------------------------
+    $ git clone clone git@github.com:ulrikpedersen/tomoscan.git
 
-It is recommended that you install into a “virtual environment” so this
-installation will not interfere with any existing Python software::
+Build the top level bluesky environment Docker container by running
 
-    $ python3 -m venv /path/to/venv
-    $ source /path/to/venv/bin/activate
+::
+    
+    $ docker build -t tomoscan .
 
+Navigate to the sim folder and build the docker files for the simulation and IOCs by running
 
-Installing the library
-----------------------
+::
+    
+    $ ./build.sh
 
-You can now use ``pip`` to install the library and its dependencies::
+A .env file is used to supply information on the CLF docker containers used in the docker compose environment.
+Copy the example-dotenv file to create a local .env file as follows:
 
-    $ python3 -m pip install tomoscan
+::
 
-If you require a feature that is not currently released you can also install
-from github::
-
-    $ python3 -m pip install git+https://github.com/ulrikpedersen/tomoscan.git
-
-The library should now be installed and the commandline interface on your path.
-You can check the version that has been installed by typing::
-
-    $ tomoscan --version
+    $ cp example-dotenv .env

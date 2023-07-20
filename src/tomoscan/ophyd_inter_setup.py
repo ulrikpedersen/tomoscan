@@ -51,7 +51,8 @@ def wait_for_value(signal: EpicsSignal, value, poll_time=0.01, timeout=10):
     expiration_time = ttime.time() + timeout
     current_value = signal.get()
     while current_value != value:
-        ttime.sleep(poll_time)
+        # ttime.sleep(poll_time)
+        yield from bps.sleep(poll_time)
         if ttime.time() > expiration_time:
             raise TimeoutError(
                 "Timed out waiting for %r to take value %r after %r seconds"
@@ -71,10 +72,10 @@ def pulse_sync(detectors, motor, laser, start, stop, steps):
     for i in range(steps):
         yield from bps.checkpoint()  # allows pausing/rewinding
         yield from mv(motor, start + i * step_size)
-        wait_for_value(
+        yield from wait_for_value(
             laser.power, 0, poll_time=0.01, timeout=10
         )  # Want to be at 0 initially such that image taken on pulse
-        wait_for_value(laser.power, 1, poll_time=0.001, timeout=10)
+        yield from wait_for_value(laser.power, 1, poll_time=0.001, timeout=10)
         yield from bps.trigger_and_read(list(detectors) + [motor] + [laser])
     yield from bps.close_run()
 
@@ -97,9 +98,9 @@ def passive_scan(detectors, motor, start, stop, steps, adStatus, pulse_ID):
     for i in range(steps):
         yield from mv(motor, start + i * step_size)
         yield from bps.checkpoint()
-        wait_for_value(adStatus, 2, poll_time=0.001, timeout=10)
+        yield from wait_for_value(adStatus, 2, poll_time=0.001, timeout=10)
         yield from bps.trigger_and_read([motor] + [pulse_ID])
-        wait_for_value(adStatus, 0, poll_time=0.001, timeout=10)
+        yield from wait_for_value(adStatus, 0, poll_time=0.001, timeout=10)
 
     for det in detectors:
         yield from bps.unstage(det)
