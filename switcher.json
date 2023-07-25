@@ -20,6 +20,10 @@
     "url": "https://ulrikpedersen.github.io/tomoscan/graylog/"
   },
   {
+    "version": "milestone1-demo",
+    "url": "https://ulrikpedersen.github.io/tomoscan/milestone1-demo/"
+  },
+  {
     "version": "src",
     "url": "https://ulrikpedersen.github.io/tomoscan/src/"
   },
