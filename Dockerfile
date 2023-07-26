@@ -1,6 +1,6 @@
 FROM python:3.10.6-slim
 
-RUN pip install bluesky ophyd ipython matplotlib databroker pyepics
+RUN pip install h5py bluesky ophyd ipython matplotlib databroker pyepics area-detector-handlers
 
 RUN mkdir /code
 COPY src/tomoscan/ophyd_inter_setup.py /code/ophyd_inter_setup.py

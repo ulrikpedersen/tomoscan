@@ -33,6 +33,7 @@ class MyDetector(SingleTrigger, AreaDetector):
         MyHDF5Plugin,
         "HDF1:",
         write_path_template="/out/%Y/%m/%d/",
+        read_path_template="/data/%Y/%m/%d/",  # Where bluesky container mount data
     )
 
 
@@ -108,26 +109,14 @@ def passive_scan(detectors, motor, start, stop, steps, adStatus, pulse_ID):
     yield from bps.close_run()
 
 
-RE = RunEngine()
-
-bec = BestEffortCallback()
-# db = Broker.named("temp")  # This creates a temporary database
-# db = Broker.named("mongo")  # Connects to MongoDB database
-catalog = databroker.catalog["mongo"]
-
-# Send all metadata/data captured to the BestEffortCallback.
-RE.subscribe(bec)
-# Insert all metadata/data captured into the catalog.
-RE.subscribe(catalog.v1.insert)
-
-
 prefix = "ADT:USER1:"
 det = MyDetector(prefix, name="det")
 det.hdf1.create_directory.put(-5)
 det.hdf1.warmup()
 
-det.cam.stage_sigs["image_mode"] = "Single"
+det.cam.stage_sigs["image_mode"] = "Multiple"
 det.cam.stage_sigs["acquire_time"] = 0.05
+det.cam.stage_sigs["num_images"] = 1
 
 motor1 = EpicsMotor("motorS:axis1", name="motor1")
 
@@ -138,7 +127,24 @@ laser1.wait_for_connection()
 adStatus = EpicsSignalRO("ADT:USER1:CAM:DetectorState_RBV", name="adStatus")
 pulse_ID = EpicsSignalRO("EPAC-DEV:PULSE:PULSE_ID", name="pulse_ID")
 
+RE = RunEngine()
+
+bec = BestEffortCallback()
+# db = Broker.named("temp")  # This creates a temporary database
+# db = Broker.named("mongo")  # Connects to MongoDB database
+# catalog = databroker.catalog["mongo"]
+catalog = databroker.temp().v2
+
+# Send all metadata/data captured to the BestEffortCallback.
+RE.subscribe(bec)
+# Insert all metadata/data captured into the catalog.
+RE.subscribe(catalog.v1.insert)
+
 
 # Examples of how to run both scans:
-# RE(pulse_sync([det], motor1, laser1, -10, 10, 11))
-# RE(passive_scan([det], motor1, -10, 10, 11, adStatus , pulse_ID))
+# uids = RE(pulse_sync([det], motor1, laser1, -10, 10, 11))
+# uids = RE(passive_scan([det], motor1, -10, 10, 11, adStatus , pulse_ID))
+
+# Take a look at the data from the run
+# run = catalog.v2[uids[0]]
+# ds = run.primary.read()
