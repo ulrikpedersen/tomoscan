@@ -46,3 +46,9 @@ In that case use a python venv to install the dependencies of the python script 
             $ python3 -m venv venv
             $ source venv/bin/activate
             $ pip install -e '.[dev]'
+
+It is also neccassary to configure the databroker correctly if running locally. This can be done by copying the mongo.yml file to :code:`~/.config/databroker`
+
+::
+
+    cp mongo.yml ~/.config/databroker/
