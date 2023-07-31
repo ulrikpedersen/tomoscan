@@ -2,7 +2,7 @@ Running a scan
 ==================
 
 * Start the interactive bluesky environment. This is best done within the same network as the docker-compose environment which can be achieved by running: :code:`docker run --net tomoscan_default -it tomoscan`
-* Start the phoebus screen to monitor the scan's progress. Navigate to the display folder and run :code:`./startOvervirew.sh`
+* Start the phoebus screen to monitor the scan's progress. Navigate to the display folder and run :code:`./startOverview.sh`
 
 There are two scan modes which are explained below. Outputs from the scan are saved to the data directory.
 
