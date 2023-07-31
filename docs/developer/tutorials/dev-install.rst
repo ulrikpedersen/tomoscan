@@ -51,4 +51,5 @@ It is also neccassary to configure the databroker correctly if running locally. 
 
 ::
 
+    mkdir ~/.config/databroker
     cp mongo.yml ~/.config/databroker/
