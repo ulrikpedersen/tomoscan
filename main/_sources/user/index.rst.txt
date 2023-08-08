@@ -26,6 +26,7 @@ side-bar.
             :maxdepth: 1
 
             how-to/run-scan
+            how-to/access-data
 
         +++
 

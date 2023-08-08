@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>About the documentation &#8212; tomoscan 0.1.0 documentation</title>
+    <title>Accessing data &#8212; tomoscan 0.1.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user/explanations/docs-structure';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user/how-to/access-data';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://ulrikpedersen.github.io/tomoscan/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.0';
@@ -51,8 +51,8 @@
     <link rel="icon" href="../../_static/dls-favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="API" href="../reference/api.html" />
-    <link rel="prev" title="Accessing data" href="../how-to/access-data.html" />
+    <link rel="next" title="About the documentation" href="../explanations/docs-structure.html" />
+    <link rel="prev" title="Running a scan" href="run-scan.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -379,13 +379,13 @@ document.write(`
 
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../how-to/run-scan.html">Running a scan</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../how-to/access-data.html">Accessing data</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="run-scan.html">Running a scan</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Accessing data</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">About the documentation</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../explanations/docs-structure.html">About the documentation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -431,7 +431,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">User Guide</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">About the documentation</li>
+    <li class="breadcrumb-item active" aria-current="page">Accessing data</li>
   </ul>
 </nav>
 </div>
@@ -448,20 +448,29 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="about-the-documentation">
-<h1>About the documentation<a class="headerlink" href="#about-the-documentation" title="Permalink to this heading">#</a></h1>
-<blockquote>
-<div><p><svg version="4.0.0.63c5cb3" width="2.0em" height="2.0em" class="sd-material-icon sd-material-icon-format_quote" viewBox="0 0 24 24" aria-hidden="true"><path d="M0 0h24v24H0z" fill="none"></path><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"></path></svg></p>
-<p>The Grand Unified Theory of Documentation</p>
-<p class="attribution">—David Laing</p>
-</div></blockquote>
-<p>There is a secret that needs to be understood in order to write good software
-documentation: there isn’t one thing called <em>documentation</em>, there are four.</p>
-<p>They are: <em>tutorials</em>, <em>how-to guides</em>, <em>technical reference</em> and <em>explanation</em>.
-They represent four different purposes or functions, and require four different
-approaches to their creation. Understanding the implications of this will help
-improve most documentation - often immensely.</p>
-<p><a class="reference external" href="https://documentation.divio.com">More information on this topic.</a></p>
+  <section id="accessing-data">
+<h1>Accessing data<a class="headerlink" href="#accessing-data" title="Permalink to this heading">#</a></h1>
+<p>Data from the scans is saved using the <a class="reference external" href="https://blueskyproject.io/databroker/">Databroker</a> to the mongoDB database which runs as part of the docker compose file.
+The data from all scans run will remain available in the databroker catlog as long as the mongoDB docker container is running.</p>
+<section id="accessing-a-run">
+<h2>Accessing a run<a class="headerlink" href="#accessing-a-run" title="Permalink to this heading">#</a></h2>
+<p>There are multiple ways of accessing a run from the databroker catalog.</p>
+<ul class="simple">
+<li><p>The first is via a run’s uid which is returned when the run is run. For example if running a run as <code class="code docutils literal notranslate"><span class="pre">uids</span> <span class="pre">=</span> <span class="pre">RE(pulse_sync([det],</span> <span class="pre">motor1,</span> <span class="pre">laser1,</span> <span class="pre">-10,</span> <span class="pre">10,</span> <span class="pre">11))</span></code> then the run can be accessed as <code class="code docutils literal notranslate"><span class="pre">run</span> <span class="pre">=</span> <span class="pre">catalog[uids[0]]</span></code>.</p></li>
+<li><p>Runs can also be accessed be their recency. To access the most recent run use <code class="code docutils literal notranslate"><span class="pre">run</span> <span class="pre">=</span> <span class="pre">catalog[-1]</span></code>, to access the second most recent run replace <code class="code docutils literal notranslate"><span class="pre">-1</span></code> with <code class="code docutils literal notranslate"><span class="pre">-2</span></code> and so on.</p></li>
+</ul>
+</section>
+<section id="run-data">
+<h2>Run data<a class="headerlink" href="#run-data" title="Permalink to this heading">#</a></h2>
+<p>To access the run data as an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html">xarray dataset</a> use <code class="code docutils literal notranslate"><span class="pre">data</span> <span class="pre">=</span> <span class="pre">run.primary.read()</span></code>.
+For the synced scan this data includes the laser pulse ID, the motor position and the image captured by the detector.</p>
+<section id="image-access">
+<h3>Image access<a class="headerlink" href="#image-access" title="Permalink to this heading">#</a></h3>
+<p>The image data is accessed as <code class="code docutils literal notranslate"><span class="pre">image</span> <span class="pre">=</span> <span class="pre">data[&quot;det_image&quot;]</span></code>. Individual frames are then accessed as <code class="code docutils literal notranslate"><span class="pre">frame</span> <span class="pre">=</span> <span class="pre">image[0][0]</span></code>.
+The first index refers to the time of the image and the second index refers to the frame number of that detector triggering.
+If only capturing one frame per trigger then this second index will always be 0.</p>
+</section>
+</section>
 </section>
 
 
@@ -476,20 +485,20 @@ improve most documentation - often immensely.</p>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../how-to/access-data.html"
+       href="run-scan.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Accessing data</p>
+        <p class="prev-next-title">Running a scan</p>
       </div>
     </a>
     <a class="right-next"
-       href="../reference/api.html"
+       href="../explanations/docs-structure.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">API</p>
+        <p class="prev-next-title">About the documentation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -506,9 +515,23 @@ improve most documentation - often immensely.</p>
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
   <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-a-run">Accessing a run</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-data">Run data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-access">Image access</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/ulrikpedersen/tomoscan/edit/0.1.0/docs/user/explanations/docs-structure.rst">
+    <a href="https://github.com/ulrikpedersen/tomoscan/edit/0.1.0/docs/user/how-to/access-data.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -522,7 +545,7 @@ improve most documentation - often immensely.</p>
 
   <div class="sidebar-secondary-item">
   <div class="tocsection sourcelink">
-    <a href="../../_sources/user/explanations/docs-structure.rst.txt">
+    <a href="../../_sources/user/how-to/access-data.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
