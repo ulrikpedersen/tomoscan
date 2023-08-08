@@ -33,7 +33,7 @@ class MyDetector(SingleTrigger, AreaDetector):
         MyHDF5Plugin,
         "HDF1:",
         write_path_template="/out/%Y/%m/%d/",
-        read_path_template="/data/%Y/%m/%d/",  # Where bluesky container mount data
+        read_path_template="/out/%Y/%m/%d/",  # Where bluesky container mount data
     )
 
 
@@ -114,6 +114,8 @@ det = MyDetector(prefix, name="det")
 det.hdf1.create_directory.put(-5)
 det.hdf1.warmup()
 
+det.hdf1.kind = 3  # config | normal, required to include images in run documents
+
 det.cam.stage_sigs["image_mode"] = "Multiple"
 det.cam.stage_sigs["acquire_time"] = 0.05
 det.cam.stage_sigs["num_images"] = 1
@@ -132,8 +134,8 @@ RE = RunEngine()
 bec = BestEffortCallback()
 # db = Broker.named("temp")  # This creates a temporary database
 # db = Broker.named("mongo")  # Connects to MongoDB database
-# catalog = databroker.catalog["mongo"]
-catalog = databroker.temp().v2
+catalog = databroker.catalog["mongo"]
+# catalog = databroker.temp().v2
 
 # Send all metadata/data captured to the BestEffortCallback.
 RE.subscribe(bec)
