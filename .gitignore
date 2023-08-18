@@ -81,3 +81,4 @@ lib/
 # Output files
 data/*
 !data/.placeholder
+src/tomoscan/.ipynb_checkpoints/setup-checkpoint.ipynb
