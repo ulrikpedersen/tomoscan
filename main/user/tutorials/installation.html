@@ -37,9 +37,9 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=40769cce"></script>
+    <script src="../../_static/documentation_options.js?v=38b66d78"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -449,10 +449,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
 <p>These instructions assume the use of Ubuntu 22.04. However, given that all code is run within Docker containers this system would be expected to run easily on other systems.</p>
 <section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h2>
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Docker is required to be installed on your PC. Instructions to install Docker Engine on Ubuntu can be found at <a class="reference external" href="https://docs.docker.com/engine/install/ubuntu/">https://docs.docker.com/engine/install/ubuntu/</a></p></li>
 <li><p>An installation of Phoebus is recommended to observe the scans. Phoebus can be downloaded from <a class="reference external" href="https://controlssoftware.sns.ornl.gov/css_phoebus/">https://controlssoftware.sns.ornl.gov/css_phoebus/</a></p></li>
@@ -461,7 +461,7 @@ document.write(`
 </ul>
 </section>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>Clone this repository using:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone clone git@github.com:ulrikpedersen/tomoscan.git
 </pre></div>
@@ -482,10 +482,10 @@ Copy the example-dotenv file to create a local .env file as follows:</p>
 </section>
 </section>
 <section id="bring-up-the-runtime-environment">
-<h1>Bring up the runtime environment<a class="headerlink" href="#bring-up-the-runtime-environment" title="Permalink to this heading">#</a></h1>
+<h1>Bring up the runtime environment<a class="headerlink" href="#bring-up-the-runtime-environment" title="Link to this heading">#</a></h1>
 <p>The runtime environment consists of a number of services which can be brought up/down on a local development machine using docker compose.</p>
 <section id="start-and-access-logging-service">
-<span id="logging-service"></span><h2>Start and access logging service<a class="headerlink" href="#start-and-access-logging-service" title="Permalink to this heading">#</a></h2>
+<span id="logging-service"></span><h2>Start and access logging service<a class="headerlink" href="#start-and-access-logging-service" title="Link to this heading">#</a></h2>
 <p>The many services can log into a single location for easy searching and monitoring. A separate docker compose file named <code class="code docutils literal notranslate"><span class="pre">graylog-compose.yml</span></code> can be used to bring up a Graylog stack.</p>
 <p>First configure a graylog admin account password:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat example-graylog-dotenv &gt;&gt; .env
@@ -509,7 +509,7 @@ MXOuTyOQVxSmLL9lxGanDHyw8az3S7PkDmzlKFLfPH081xFgxmcMxwY3DsQxDN5cjfFGS01v7RtDVJRj
 <p>Connect to the graylog web-interface on <a class="reference external" href="http://localhost:9000">http://localhost:9000</a> and login with the <code class="code docutils literal notranslate"><span class="pre">admin</span></code> user and the password selected above. On the graylog web interface, navigate to “Search” (top left menu). Then select a time-window or “all messages” (top left clock) and click the green search button. Start the automatic updating and set the poll to “1 Second” (top right corner). Now you are ready to see logs when starting up the control system services in the next steps…</p>
 </section>
 <section id="start-the-control-system">
-<h2>Start the Control System<a class="headerlink" href="#start-the-control-system" title="Permalink to this heading">#</a></h2>
+<h2>Start the Control System<a class="headerlink" href="#start-the-control-system" title="Link to this heading">#</a></h2>
 <p>The simulation control system with motor, and areaDetector IOCs as well as laser pulse simulation can be started with docker compose:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker compose up -d
 </pre></div>

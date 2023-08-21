@@ -37,9 +37,9 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=40769cce"></script>
+    <script src="../../_static/documentation_options.js?v=38b66d78"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -449,11 +449,11 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="accessing-data">
-<h1>Accessing data<a class="headerlink" href="#accessing-data" title="Permalink to this heading">#</a></h1>
+<h1>Accessing data<a class="headerlink" href="#accessing-data" title="Link to this heading">#</a></h1>
 <p>Data from the scans is saved using the <a class="reference external" href="https://blueskyproject.io/databroker/">Databroker</a> to the mongoDB database which runs as part of the docker compose file.
 The data from all scans run will remain available in the databroker catlog as long as the mongoDB docker container is running.</p>
 <section id="accessing-a-run">
-<h2>Accessing a run<a class="headerlink" href="#accessing-a-run" title="Permalink to this heading">#</a></h2>
+<h2>Accessing a run<a class="headerlink" href="#accessing-a-run" title="Link to this heading">#</a></h2>
 <p>There are multiple ways of accessing a run from the databroker catalog.</p>
 <ul class="simple">
 <li><p>The first is via a run’s uid which is returned when the run is run. For example if running a run as <code class="code docutils literal notranslate"><span class="pre">uids</span> <span class="pre">=</span> <span class="pre">RE(pulse_sync([det],</span> <span class="pre">motor1,</span> <span class="pre">laser1,</span> <span class="pre">-10,</span> <span class="pre">10,</span> <span class="pre">11))</span></code> then the run can be accessed as <code class="code docutils literal notranslate"><span class="pre">run</span> <span class="pre">=</span> <span class="pre">catalog[uids[0]]</span></code>.</p></li>
@@ -461,11 +461,11 @@ The data from all scans run will remain available in the databroker catlog as lo
 </ul>
 </section>
 <section id="run-data">
-<h2>Run data<a class="headerlink" href="#run-data" title="Permalink to this heading">#</a></h2>
+<h2>Run data<a class="headerlink" href="#run-data" title="Link to this heading">#</a></h2>
 <p>To access the run data as an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html">xarray dataset</a> use <code class="code docutils literal notranslate"><span class="pre">data</span> <span class="pre">=</span> <span class="pre">run.primary.read()</span></code>.
 For the synced scan this data includes the laser pulse ID, the motor position and the image captured by the detector.</p>
 <section id="image-access">
-<h3>Image access<a class="headerlink" href="#image-access" title="Permalink to this heading">#</a></h3>
+<h3>Image access<a class="headerlink" href="#image-access" title="Link to this heading">#</a></h3>
 <p>The image data is accessed as <code class="code docutils literal notranslate"><span class="pre">image</span> <span class="pre">=</span> <span class="pre">data[&quot;det_image&quot;]</span></code>. Individual frames are then accessed as <code class="code docutils literal notranslate"><span class="pre">frame</span> <span class="pre">=</span> <span class="pre">image[0][0]</span></code>.
 The first index refers to the time of the image and the second index refers to the frame number of that detector triggering.
 If only capturing one frame per trigger then this second index will always be 0.</p>

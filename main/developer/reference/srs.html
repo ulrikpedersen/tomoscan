@@ -37,9 +37,9 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=40769cce"></script>
+    <script src="../../_static/documentation_options.js?v=38b66d78"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -454,46 +454,46 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="software-requirement-specification">
-<h1>Software Requirement Specification<a class="headerlink" href="#software-requirement-specification" title="Permalink to this heading">#</a></h1>
+<h1>Software Requirement Specification<a class="headerlink" href="#software-requirement-specification" title="Link to this heading">#</a></h1>
 <p>This is a requirements specification for a Tomography Scan demonstrator application for the STFC/CLF/EPAC laser facility.</p>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>The <a class="reference internal" href="../../user/reference/api.html#module-tomoscan" title="tomoscan"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">tomoscan</span></code></a> application will demonstrate the orchestration of a single-dimension scan of a sample in a Tomography laser experiment. While the project will deliver a real-time control system and demonstration of the tomography scan, the devices it controls are simulated.</p>
 <section id="scope">
-<h3>Scope<a class="headerlink" href="#scope" title="Permalink to this heading">#</a></h3>
+<h3>Scope<a class="headerlink" href="#scope" title="Link to this heading">#</a></h3>
 <p>The project includes <a class="reference external" href="https://epics-controls.org/">EPICS</a> IOCs with simulated hardware: motor, shutter and detector as well as an installation of BlueSky and a suitable experiment plan for a tomography experiment.</p>
 <p>The project does not include tomographic reconstruction of the acquired data.</p>
 </section>
 <section id="intended-audience">
-<h3>Intended Audience<a class="headerlink" href="#intended-audience" title="Permalink to this heading">#</a></h3>
+<h3>Intended Audience<a class="headerlink" href="#intended-audience" title="Link to this heading">#</a></h3>
 <p>Data Acquisition developers and scientists at EPAC.</p>
 </section>
 <section id="intended-use">
-<h3>Intended Use<a class="headerlink" href="#intended-use" title="Permalink to this heading">#</a></h3>
+<h3>Intended Use<a class="headerlink" href="#intended-use" title="Link to this heading">#</a></h3>
 <p>The use of this application is to evaluate the technology choices behind it: in particular the use of the Python and the <a class="reference external" href="https://epics-controls.org/">EPICS</a> <a class="reference external" href="https://blueskyproject.io/">BlueSky</a> and <a class="reference external" href="https://blueskyproject.io/ophyd/">Ophyd</a> frameworks for the use-case of performing a Computed Tomography scan of a sample using a pulsed laser light source.</p>
 </section>
 </section>
 <section id="functional-requirements">
-<h2>Functional requirements<a class="headerlink" href="#functional-requirements" title="Permalink to this heading">#</a></h2>
+<h2>Functional requirements<a class="headerlink" href="#functional-requirements" title="Link to this heading">#</a></h2>
 <p>The application <a class="reference internal" href="../../user/reference/api.html#module-tomoscan" title="tomoscan"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">tomoscan</span></code></a> must perform a step-scan of a simulated motor, triggering and acquiring images from a simulated detector in synchronisation with simulated laser pulses.</p>
 </section>
 <section id="external-requirements">
-<h2>External requirements<a class="headerlink" href="#external-requirements" title="Permalink to this heading">#</a></h2>
+<h2>External requirements<a class="headerlink" href="#external-requirements" title="Link to this heading">#</a></h2>
 <section id="user-interfaces">
-<h3>User interfaces<a class="headerlink" href="#user-interfaces" title="Permalink to this heading">#</a></h3>
+<h3>User interfaces<a class="headerlink" href="#user-interfaces" title="Link to this heading">#</a></h3>
 <p>The user interface (UI) of <a class="reference internal" href="../../user/reference/api.html#module-tomoscan" title="tomoscan"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">tomoscan</span></code></a> will primarily be an interactive python terminal and a         commandline (CLI) script, performing the BlueSky scan.</p>
 <p>The Phoebus EPICS display manager (DM) will be used as a monitoring tool to view the simulation running.</p>
 </section>
 </section>
 <section id="non-functional-requirements">
-<h2>Non-functional requirements<a class="headerlink" href="#non-functional-requirements" title="Permalink to this heading">#</a></h2>
+<h2>Non-functional requirements<a class="headerlink" href="#non-functional-requirements" title="Link to this heading">#</a></h2>
 <section id="runtime-environment">
-<h3>Runtime Environment<a class="headerlink" href="#runtime-environment" title="Permalink to this heading">#</a></h3>
+<h3>Runtime Environment<a class="headerlink" href="#runtime-environment" title="Link to this heading">#</a></h3>
 <p>The <a class="reference internal" href="../../user/reference/api.html#module-tomoscan" title="tomoscan"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">tomoscan</span></code></a> application itself will only execute the scan itself.</p>
 <p>EPICS control system IOCs will be included in the project to provide the simulated runtime environment.</p>
 </section>
 <section id="epics-simulations">
-<h3>EPICS simulations<a class="headerlink" href="#epics-simulations" title="Permalink to this heading">#</a></h3>
+<h3>EPICS simulations<a class="headerlink" href="#epics-simulations" title="Link to this heading">#</a></h3>
 <p>The simulated motor representation will be based on the EPICS motor record with a simulation backend.</p>
 <p>The detector will be an EPICS areaDetector simulation using simDetector.</p>
 <p>The laser pulse, shutter and ancillery parts of the Control System will be simulated using EPICS database logic and records.</p>

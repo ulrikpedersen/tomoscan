@@ -37,9 +37,9 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=40769cce"></script>
+    <script src="../../_static/documentation_options.js?v=38b66d78"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -449,7 +449,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="running-a-scan">
-<h1>Running a scan<a class="headerlink" href="#running-a-scan" title="Permalink to this heading">#</a></h1>
+<h1>Running a scan<a class="headerlink" href="#running-a-scan" title="Link to this heading">#</a></h1>
 <ul class="simple">
 <li><p>Start the interactive bluesky environment. It is important to mount the output directory and run the container within the same network as the docker-compose environment. This can be achieved by running:</p></li>
 </ul>
@@ -461,7 +461,7 @@ document.write(`
 </ul>
 <p>There are two scan modes which are explained below. Outputs from the scan are saved to the data directory.</p>
 <section id="synced-scan">
-<h2>Synced scan<a class="headerlink" href="#synced-scan" title="Permalink to this heading">#</a></h2>
+<h2>Synced scan<a class="headerlink" href="#synced-scan" title="Link to this heading">#</a></h2>
 <p>In the default setup the pulse generator triggers the laser IOC and then when running the synced scan the motor moves to its next position, waits for the laser PV to
 go high and then bluesky triggers the areadetector. The motor then proceeds to its next positon. If implementing in hardware the idea would be that the pulse generator would trigger a laser as well as a “laser” PV and a delay wouldbe tuned to trigger the areadetecor at the correct time.</p>
 <p>A synced scan between position -10 and 10 in 21 steps is run as:</p>
@@ -470,7 +470,7 @@ go high and then bluesky triggers the areadetector. The motor then proceeds to i
 </div>
 </section>
 <section id="passive-scan">
-<h2>Passive scan<a class="headerlink" href="#passive-scan" title="Permalink to this heading">#</a></h2>
+<h2>Passive scan<a class="headerlink" href="#passive-scan" title="Link to this heading">#</a></h2>
 <p>For a passive scan the pulse generator is setup to directly trigger the areadetector. To enter this configuration you must uncomment the commented out camA section in pulse-id-gen.ini
 The Bluesky scan moves the motor and then waits for the detector to take an image before the motor moves again. Due to the detector not being directly triggered by Bluesky additional frames may sometimes by captured. The correct frames will be identifiable by the pulse IDs recorded by the Bluesky scan when compared with the pulse ID of the NDAttributes associated with the captured frame in the hdf5 file.</p>
 <p>A passive scan between position -20 and 20 in 11 steps is run as:</p>
