@@ -1,60 +1,55 @@
 Developer install
 =================
 
-These instructions will take you through the minimal steps required to get a dev
-environment setup, so you can run the tests locally.
+These instructions assume the use of Ubuntu 22.04. However, given that all code is run within Docker containers this system would be expected to run easily on other systems.
 
-Clone the repository
---------------------
+Prerequisites
+----------------
+* Docker is required to be installed on your PC. Instructions to install Docker Engine on Ubuntu can be found at https://docs.docker.com/engine/install/ubuntu/
+* An installation of Phoebus is recommended to observe the scans. Phoebus can be downloaded from https://controlssoftware.sns.ornl.gov/css_phoebus/
+* If using VSCode installing the H5Web extension allows the easy viewing of the hdf output files from scans
+* To use EPAC Docker images from ghcr.io you need to ensure that you have an access token setup. This can be done by following the instructions `here <https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic>`_
 
-First clone the repository locally using `Git
-<https://git-scm.com/downloads>`_::
+Setup
+-------------
+Clone this repository using:
 
-    $ git clone git://github.com/ulrikpedersen/tomoscan.git
+::
 
-Install dependencies
---------------------
+    $ git clone clone git@github.com:ulrikpedersen/tomoscan.git
 
-You can choose to either develop on the host machine using a `venv` (which
-requires python 3.8 or later) or to run in a container under `VSCode
-<https://code.visualstudio.com/>`_
+Build the top level bluesky environment Docker container by running
 
-.. tab-set::
+::
+    
+    $ docker build -t tomoscan .
 
-    .. tab-item:: Local virtualenv
+Navigate to the sim folder and build the docker files for the simulation and IOCs by running
 
-        .. code::
+::
+    
+    $ ./build.sh
+
+A .env file is used to supply information on the CLF docker containers used in the docker compose environment.
+Copy the example-dotenv file to create a local .env file as follows:
+
+::
+
+    $ cp example-dotenv .env
+
+It can be easier to make changes to the python script which launches bluesky :code:`src/ophyd_inter_setup.py` locally rather than in a Docker container during development. 
+In that case use a python venv to install the dependencies of the python script as:
+
+.. code::
 
             $ cd tomoscan
             $ python3 -m venv venv
             $ source venv/bin/activate
             $ pip install -e '.[dev]'
 
-    .. tab-item:: VSCode devcontainer
+It is also neccassary to configure the databroker correctly if running locally. This can be done by copying the mongo.yml file to :code:`~/.config/databroker`
 
-        .. code::
+::
 
-            $ vscode tomoscan
-            # Click on 'Reopen in Container' when prompted
-            # Open a new terminal
-
-See what was installed
-----------------------
-
-To see a graph of the python package dependency tree type::
-
-    $ pipdeptree
-
-Build and test
---------------
-
-Now you have a development environment you can run the tests in a terminal::
-
-    $ tox -p
-
-This will run in parallel the following checks:
-
-- `../how-to/build-docs`
-- `../how-to/run-tests`
-- `../how-to/static-analysis`
-- `../how-to/lint`
+    mkdir ~/.config/databroker
+    cp mongo.yml ~/.config/databroker/

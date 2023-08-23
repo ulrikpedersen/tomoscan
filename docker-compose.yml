@@ -1,8 +1,18 @@
-version: "3.2"
+version: "3.8"
+
+volumes:
+  mongodata:
+    name: tomoscan_mongodbdata
+
 services:
   motor-sim:
     image: sim-pmac
     stop_signal: "SIGKILL"
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   motor-ioc:
     image: pmac-ioc
     stdin_open: true
@@ -11,6 +21,11 @@ services:
     stop_signal: "SIGKILL"
     env_file:
       - epics.env
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   areadetector:
     image: ad-ioc
     stdin_open: true
@@ -21,6 +36,11 @@ services:
         target: /out
     env_file:
       - epics.env
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   pulse-sim:
     image: sim-pulse
     command:
@@ -28,18 +48,33 @@ services:
     stop_signal: "SIGKILL"
     env_file:
       - epics.env
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   gateway:
     image: ${DOCKER_TAG_BASE}epics-gateway-run:${DOCKER_TAG_VERSION}
     ports:
       - "50640:50640"
-      - "5064:50640/udp"
+      - "5064:50640/udp"  # MOFIFY the port 5064 to something else when running multiple instances on the same subnet.
     env_file:
       - epics.env
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.1
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   kafka:
     image: confluentinc/cp-kafka:7.3.1
     ports:
@@ -54,6 +89,11 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
   pulse-id-gen:
     image: ${DOCKER_TAG_BASE}pulse-id-gen:${DOCKER_TAG_VERSION}
     command:
@@ -62,7 +102,7 @@ services:
       - --pv-prefix
       - "EPAC-DEV:PULSE:"
       - --period
-      - "0.2"
+      - "5"
       - --epics-time-offset
       - "-0.05"
       - --enable-gate
@@ -76,7 +116,22 @@ services:
         source: ./pulse-id-gen.ini
         target: /app/config.ini
         read_only: true
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
+
   mongo-db:
     image: mongo
     ports:
       - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201" # This has to be the name of the gralog server from the host perspective
+        tag: "tomoscan-logs"
+
+
