@@ -1,5 +1,6 @@
 # Designed to be used with iocs and simulators all running in docker compose
 
+import logging
 import math
 import time as ttime
 
@@ -127,6 +128,13 @@ def pulse_sync(detectors, motor, laser, start, stop, steps):
 # Custom plan to move motor based on detector status
 # designed for when detector is being triggered outside of bluesky
 def passive_scan(detectors, motor, start, stop, steps, adStatus, pulse_ID):
+    min_step_time = motorStepTime(motor, start, stop, steps)
+    logging.info(
+        "Minimum motor step time is %f. If this is greater than or close to the laser \
+period, multiple frames may be captured at one motor position.",
+        min_step_time,
+    )
+
     step_size = (stop - start) / (steps - 1)
 
     yield from mv(motor, start)  # Move motor to starting position since may take time
@@ -181,7 +189,6 @@ catalog = databroker.catalog["mongo"]
 RE.subscribe(bec)
 # Insert all metadata/data captured into the catalog.
 RE.subscribe(catalog.v1.insert)
-
 
 # Examples of how to run both scans:
 # uids = RE(pulse_sync([det], motor1, laser1, -10, 10, 11))
