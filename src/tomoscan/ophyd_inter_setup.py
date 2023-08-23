@@ -1,5 +1,7 @@
 # Designed to be used with iocs and simulators all running in docker compose
 
+import logging
+import math
 import time as ttime
 
 import bluesky.plan_stubs as bps
@@ -21,6 +23,45 @@ from ophyd import (
 from ophyd.areadetector import cam
 from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
 from ophyd.areadetector.plugins import HDF5Plugin_V34
+
+
+def stepTime(dist: float, accl: float, vel: float, add_time=0.0) -> float:
+    """
+    Estimates step time of motor
+
+    Parameters:
+    dist (float): Step distance
+    accl (float): Time to accelerate to target velocity
+    vel (float): Target velocity
+    add_time (float): Optional additional time to add to step
+
+    Returns:
+    float: Time to travel step distance
+    """
+    if vel * accl < dist:  # Reaches target velocity, velocity is trapesium
+        return accl + dist / vel + add_time
+    else:
+        return 2 * math.sqrt(dist * accl / vel) + add_time
+
+
+def motorStepTime(
+    motor: EpicsMotor, start: float, stop: float, steps: int, add_time=0.0
+) -> float:
+    """
+    Estimates step time of motor in scan
+
+    Parameters:
+    motor (EpicsMotor): motor being moved
+    start (float): motor start positon
+    stop (float): motor end position
+    steps (int): number of steps in scan
+    add_time (float): Optional additional time to add to step
+
+    Returns:
+    float: Time to travel step distance
+    """
+    step_size = abs((stop - start) / (steps - 1))
+    return stepTime(step_size, motor.acceleration.get(), motor.velocity.get(), add_time)
 
 
 class MyHDF5Plugin(FileStoreHDF5IterativeWrite, HDF5Plugin_V34):
@@ -87,6 +128,13 @@ def pulse_sync(detectors, motor, laser, start, stop, steps):
 # Custom plan to move motor based on detector status
 # designed for when detector is being triggered outside of bluesky
 def passive_scan(detectors, motor, start, stop, steps, adStatus, pulse_ID):
+    min_step_time = motorStepTime(motor, start, stop, steps)
+    logging.info(
+        "Minimum motor step time is %f. If this is greater than or close to the laser \
+period, additional frames are likely to be captured while the motor moves.",
+        min_step_time,
+    )
+
     step_size = (stop - start) / (steps - 1)
 
     yield from mv(motor, start)  # Move motor to starting position since may take time
@@ -141,7 +189,6 @@ catalog = databroker.catalog["mongo"]
 RE.subscribe(bec)
 # Insert all metadata/data captured into the catalog.
 RE.subscribe(catalog.v1.insert)
-
 
 # Examples of how to run both scans:
 # uids = RE(pulse_sync([det], motor1, laser1, -10, 10, 11))
