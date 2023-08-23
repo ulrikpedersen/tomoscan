@@ -1,4 +1,9 @@
 version: "3.8"
+
+volumes:
+  mongodata:
+    name: tomoscan_mongodbdata
+
 services:
   motor-sim:
     image: sim-pmac
@@ -121,6 +126,8 @@ services:
     image: mongo
     ports:
       - "27017:27017"
+    volumes:
+      - mongodata:/data/db
     logging:
       driver: "gelf"
       options:
