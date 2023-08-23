@@ -131,7 +131,7 @@ def passive_scan(detectors, motor, start, stop, steps, adStatus, pulse_ID):
     min_step_time = motorStepTime(motor, start, stop, steps)
     logging.info(
         "Minimum motor step time is %f. If this is greater than or close to the laser \
-period, multiple frames may be captured at one motor position.",
+period, additional frames are likely to be captured while the motor moves.",
         min_step_time,
     )
 
