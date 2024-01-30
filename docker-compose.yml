@@ -102,7 +102,7 @@ services:
       - --pv-prefix
       - "EPAC-DEV:PULSE:"
       - --period
-      - "5"
+      - "2"
       - --epics-time-offset
       - "-0.05"
       - --enable-gate

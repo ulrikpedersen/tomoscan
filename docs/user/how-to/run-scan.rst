@@ -1,5 +1,9 @@
 Running a scan
 ==================
+Scans can either be run within an IPython terminal or a Jupyter notebook.
+
+IPython terminal
+----------------
 
 * Start the interactive bluesky environment. It is important to mount the output directory and run the container within the same network as the docker-compose environment. This can be achieved by running:
 
@@ -10,6 +14,21 @@ Running a scan
 * Start the phoebus screen to monitor the scan's progress. Navigate to the display folder and run :code:`./startOverview.sh`
 
 There are two scan modes which are explained below. Outputs from the scan are saved to the data directory.
+
+Jupyter notebook
+-----------------
+
+* Start the Jupyter notebook container, mounting the output directory and the directory containing the example Jupyter notebook. The container must also be run within the same network as the docker-compose environment. Do this by running:
+
+.. code-block:: bash
+
+    docker run -p 8888:8888 -v `pwd`/src/tomoscan:/home/jovyan/work -v `pwd`/data:/home/jovyan/data --net tomoscan_default tomoscan_jupyter
+
+* Copy and paste the URL starting :code:`http://127.0.0.1:8888` that appears in the terminal into a browser to launch the Jupyter server
+* Launch the setup notebook which is found in the work folder
+* Start the phoebus screen to monitor the scan's progress. Navigate to the display folder and run :code:`./startOverview.sh`
+* Follow the steps in the Jupyter notebook
+
 
 Synced scan
 -------------

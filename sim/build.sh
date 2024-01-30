@@ -2,7 +2,7 @@
 
 set -e
 
-BUILD_DIRECTORIES="areaDetectorDock motorDock pmac pulsedLaser"
+BUILD_DIRECTORIES="areaDetectorDock motorDock pmac pulsedLaser jupyter"
 
 for DIR in $BUILD_DIRECTORIES; do
 	echo "+--------------------------"
